@@ -1,13 +1,13 @@
 # Toriel-IDE
-Beautiful and Lightweight IDE written in C++ using the Qt Framework.
+
+Toriel is an IDE specifically for C/C++ in C++ using the Qt Framework.
 
 ## Features
+* IntelliSense
+* * C/C++, CMake, Json, Izn
 * Syntax Highlighting
-* Code Completion
-* Intellisense
+* * C/C++, CMake, Json, Izn
 * Themes
-* Built-in Terminal
 
-### Misc. Features
-* Markdown file previewing
-* Git Control
+### Other Features
+* Intergrated Terminal
