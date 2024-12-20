@@ -10,4 +10,5 @@ An IDE for GPC Scripting, written in C++ using the Qt and KDE Frameworks.
     * Side Bar for descriptions of functions
 * Syntax Highlighting
   * Hard Coded for utmost preformance
+  * Custom JSON Theme support
 
