@@ -1,0 +1,9 @@
+C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/build/Desktop_Qt_6_8_0_MinGW_64_bit-Release/CMakeFiles/Toriel-IDE.dir
+C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/build/Desktop_Qt_6_8_0_MinGW_64_bit-Release/CMakeFiles/edit_cache.dir
+C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/build/Desktop_Qt_6_8_0_MinGW_64_bit-Release/CMakeFiles/rebuild_cache.dir
+C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/build/Desktop_Qt_6_8_0_MinGW_64_bit-Release/CMakeFiles/list_install_components.dir
+C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/build/Desktop_Qt_6_8_0_MinGW_64_bit-Release/CMakeFiles/install.dir
+C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/build/Desktop_Qt_6_8_0_MinGW_64_bit-Release/CMakeFiles/install/local.dir
+C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/build/Desktop_Qt_6_8_0_MinGW_64_bit-Release/CMakeFiles/install/strip.dir
+C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/build/Desktop_Qt_6_8_0_MinGW_64_bit-Release/CMakeFiles/Toriel-IDE_autogen_timestamp_deps.dir
+C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/build/Desktop_Qt_6_8_0_MinGW_64_bit-Release/CMakeFiles/Toriel-IDE_autogen.dir
