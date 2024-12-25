@@ -1,6 +1,7 @@
 # Toriel-IDE
 
-An IDE for GPC Scripting, written in C++ using the Qt and KDE Frameworks.
+An IDE for GPC Scripting, written in C++ using the Qt Framework.
+Toriel offers multiple features developers love as seen below;
 
 ## Features
 * IntelliSense
@@ -11,4 +12,6 @@ An IDE for GPC Scripting, written in C++ using the Qt and KDE Frameworks.
 * Syntax Highlighting
   * Hard Coded for utmost preformance
   * Custom JSON Theme support
+* True Project structure
+  *  Multiple source files and a system to emulate C++ compilers.
 
