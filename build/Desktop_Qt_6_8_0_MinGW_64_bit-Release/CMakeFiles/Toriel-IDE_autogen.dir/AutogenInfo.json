@@ -296,33 +296,27 @@
 	"HEADERS" : 
 	[
 		[
-			"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/package_parser.h",
+			"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/src/package_parser.h",
 			"MU",
-			"EWIEGA46WW/moc_package_parser.cpp",
+			"UVLADIE3JM/moc_package_parser.cpp",
 			null
 		],
 		[
-			"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/parser.h",
+			"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/src/parser.h",
 			"MU",
-			"EWIEGA46WW/moc_parser.cpp",
+			"UVLADIE3JM/moc_parser.cpp",
 			null
 		],
 		[
-			"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/settings.h",
+			"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/src/syntax.h",
 			"MU",
-			"EWIEGA46WW/moc_settings.cpp",
+			"UVLADIE3JM/moc_syntax.cpp",
 			null
 		],
 		[
-			"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/syntax.h",
+			"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/src/torielwindow.h",
 			"MU",
-			"EWIEGA46WW/moc_syntax.cpp",
-			null
-		],
-		[
-			"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/torielwindow.h",
-			"MU",
-			"EWIEGA46WW/moc_torielwindow.cpp",
+			"UVLADIE3JM/moc_torielwindow.cpp",
 			null
 		]
 	],
@@ -399,32 +393,27 @@
 	"SOURCES" : 
 	[
 		[
-			"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/main.cpp",
+			"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/src/main.cpp",
 			"MU",
 			null
 		],
 		[
-			"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/package_parser.cpp",
+			"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/src/package_parser.cpp",
 			"MU",
 			null
 		],
 		[
-			"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/parser.cpp",
+			"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/src/parser.cpp",
 			"MU",
 			null
 		],
 		[
-			"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/settings.cpp",
+			"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/src/syntax.cpp",
 			"MU",
 			null
 		],
 		[
-			"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/syntax.cpp",
-			"MU",
-			null
-		],
-		[
-			"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/torielwindow.cpp",
+			"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/src/torielwindow.cpp",
 			"MU",
 			null
 		]

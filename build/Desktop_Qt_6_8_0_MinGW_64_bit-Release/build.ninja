@@ -57,53 +57,45 @@ build CMakeFiles/Toriel-IDE.dir/Toriel-IDE_autogen/mocs_compilation.cpp.obj: CXX
   OBJECT_DIR = CMakeFiles\Toriel-IDE.dir
   OBJECT_FILE_DIR = CMakeFiles\Toriel-IDE.dir\Toriel-IDE_autogen
 
-build CMakeFiles/Toriel-IDE.dir/main.cpp.obj: CXX_COMPILER__Toriel-IDE_unscanned_Release C$:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++$ Projects/Toriel-IDE/main.cpp || cmake_object_order_depends_target_Toriel-IDE
+build CMakeFiles/Toriel-IDE.dir/src/main.cpp.obj: CXX_COMPILER__Toriel-IDE_unscanned_Release C$:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++$ Projects/Toriel-IDE/src/main.cpp || cmake_object_order_depends_target_Toriel-IDE
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
-  DEP_FILE = CMakeFiles\Toriel-IDE.dir\main.cpp.obj.d
+  DEP_FILE = CMakeFiles\Toriel-IDE.dir\src\main.cpp.obj.d
   FLAGS = -O3 -DNDEBUG -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -I"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/build/Desktop_Qt_6_8_0_MinGW_64_bit-Release/Toriel-IDE_autogen/include" -isystem C:/Qt/6.8.0/mingw_64/include/QtCore -isystem C:/Qt/6.8.0/mingw_64/include -isystem C:/Qt/6.8.0/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.8.0/mingw_64/include/QtWidgets -isystem C:/Qt/6.8.0/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\Toriel-IDE.dir
-  OBJECT_FILE_DIR = CMakeFiles\Toriel-IDE.dir
+  OBJECT_FILE_DIR = CMakeFiles\Toriel-IDE.dir\src
 
-build CMakeFiles/Toriel-IDE.dir/torielwindow.cpp.obj: CXX_COMPILER__Toriel-IDE_unscanned_Release C$:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++$ Projects/Toriel-IDE/torielwindow.cpp || cmake_object_order_depends_target_Toriel-IDE
+build CMakeFiles/Toriel-IDE.dir/src/torielwindow.cpp.obj: CXX_COMPILER__Toriel-IDE_unscanned_Release C$:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++$ Projects/Toriel-IDE/src/torielwindow.cpp || cmake_object_order_depends_target_Toriel-IDE
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
-  DEP_FILE = CMakeFiles\Toriel-IDE.dir\torielwindow.cpp.obj.d
+  DEP_FILE = CMakeFiles\Toriel-IDE.dir\src\torielwindow.cpp.obj.d
   FLAGS = -O3 -DNDEBUG -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -I"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/build/Desktop_Qt_6_8_0_MinGW_64_bit-Release/Toriel-IDE_autogen/include" -isystem C:/Qt/6.8.0/mingw_64/include/QtCore -isystem C:/Qt/6.8.0/mingw_64/include -isystem C:/Qt/6.8.0/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.8.0/mingw_64/include/QtWidgets -isystem C:/Qt/6.8.0/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\Toriel-IDE.dir
-  OBJECT_FILE_DIR = CMakeFiles\Toriel-IDE.dir
+  OBJECT_FILE_DIR = CMakeFiles\Toriel-IDE.dir\src
 
-build CMakeFiles/Toriel-IDE.dir/settings.cpp.obj: CXX_COMPILER__Toriel-IDE_unscanned_Release C$:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++$ Projects/Toriel-IDE/settings.cpp || cmake_object_order_depends_target_Toriel-IDE
+build CMakeFiles/Toriel-IDE.dir/src/syntax.cpp.obj: CXX_COMPILER__Toriel-IDE_unscanned_Release C$:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++$ Projects/Toriel-IDE/src/syntax.cpp || cmake_object_order_depends_target_Toriel-IDE
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
-  DEP_FILE = CMakeFiles\Toriel-IDE.dir\settings.cpp.obj.d
+  DEP_FILE = CMakeFiles\Toriel-IDE.dir\src\syntax.cpp.obj.d
   FLAGS = -O3 -DNDEBUG -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -I"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/build/Desktop_Qt_6_8_0_MinGW_64_bit-Release/Toriel-IDE_autogen/include" -isystem C:/Qt/6.8.0/mingw_64/include/QtCore -isystem C:/Qt/6.8.0/mingw_64/include -isystem C:/Qt/6.8.0/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.8.0/mingw_64/include/QtWidgets -isystem C:/Qt/6.8.0/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\Toriel-IDE.dir
-  OBJECT_FILE_DIR = CMakeFiles\Toriel-IDE.dir
+  OBJECT_FILE_DIR = CMakeFiles\Toriel-IDE.dir\src
 
-build CMakeFiles/Toriel-IDE.dir/syntax.cpp.obj: CXX_COMPILER__Toriel-IDE_unscanned_Release C$:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++$ Projects/Toriel-IDE/syntax.cpp || cmake_object_order_depends_target_Toriel-IDE
+build CMakeFiles/Toriel-IDE.dir/src/parser.cpp.obj: CXX_COMPILER__Toriel-IDE_unscanned_Release C$:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++$ Projects/Toriel-IDE/src/parser.cpp || cmake_object_order_depends_target_Toriel-IDE
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
-  DEP_FILE = CMakeFiles\Toriel-IDE.dir\syntax.cpp.obj.d
+  DEP_FILE = CMakeFiles\Toriel-IDE.dir\src\parser.cpp.obj.d
   FLAGS = -O3 -DNDEBUG -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -I"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/build/Desktop_Qt_6_8_0_MinGW_64_bit-Release/Toriel-IDE_autogen/include" -isystem C:/Qt/6.8.0/mingw_64/include/QtCore -isystem C:/Qt/6.8.0/mingw_64/include -isystem C:/Qt/6.8.0/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.8.0/mingw_64/include/QtWidgets -isystem C:/Qt/6.8.0/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\Toriel-IDE.dir
-  OBJECT_FILE_DIR = CMakeFiles\Toriel-IDE.dir
+  OBJECT_FILE_DIR = CMakeFiles\Toriel-IDE.dir\src
 
-build CMakeFiles/Toriel-IDE.dir/parser.cpp.obj: CXX_COMPILER__Toriel-IDE_unscanned_Release C$:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++$ Projects/Toriel-IDE/parser.cpp || cmake_object_order_depends_target_Toriel-IDE
+build CMakeFiles/Toriel-IDE.dir/src/package_parser.cpp.obj: CXX_COMPILER__Toriel-IDE_unscanned_Release C$:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++$ Projects/Toriel-IDE/src/package_parser.cpp || cmake_object_order_depends_target_Toriel-IDE
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
-  DEP_FILE = CMakeFiles\Toriel-IDE.dir\parser.cpp.obj.d
+  DEP_FILE = CMakeFiles\Toriel-IDE.dir\src\package_parser.cpp.obj.d
   FLAGS = -O3 -DNDEBUG -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -I"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/build/Desktop_Qt_6_8_0_MinGW_64_bit-Release/Toriel-IDE_autogen/include" -isystem C:/Qt/6.8.0/mingw_64/include/QtCore -isystem C:/Qt/6.8.0/mingw_64/include -isystem C:/Qt/6.8.0/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.8.0/mingw_64/include/QtWidgets -isystem C:/Qt/6.8.0/mingw_64/include/QtGui
   OBJECT_DIR = CMakeFiles\Toriel-IDE.dir
-  OBJECT_FILE_DIR = CMakeFiles\Toriel-IDE.dir
-
-build CMakeFiles/Toriel-IDE.dir/package_parser.cpp.obj: CXX_COMPILER__Toriel-IDE_unscanned_Release C$:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++$ Projects/Toriel-IDE/package_parser.cpp || cmake_object_order_depends_target_Toriel-IDE
-  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
-  DEP_FILE = CMakeFiles\Toriel-IDE.dir\package_parser.cpp.obj.d
-  FLAGS = -O3 -DNDEBUG -std=gnu++17 -fdiagnostics-color=always
-  INCLUDES = -I"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/build/Desktop_Qt_6_8_0_MinGW_64_bit-Release/Toriel-IDE_autogen/include" -isystem C:/Qt/6.8.0/mingw_64/include/QtCore -isystem C:/Qt/6.8.0/mingw_64/include -isystem C:/Qt/6.8.0/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.8.0/mingw_64/include/QtWidgets -isystem C:/Qt/6.8.0/mingw_64/include/QtGui
-  OBJECT_DIR = CMakeFiles\Toriel-IDE.dir
-  OBJECT_FILE_DIR = CMakeFiles\Toriel-IDE.dir
+  OBJECT_FILE_DIR = CMakeFiles\Toriel-IDE.dir\src
 
 
 # =============================================================================
@@ -113,7 +105,7 @@ build CMakeFiles/Toriel-IDE.dir/package_parser.cpp.obj: CXX_COMPILER__Toriel-IDE
 #############################################
 # Link the executable Toriel-IDE.exe
 
-build Toriel-IDE.exe: CXX_EXECUTABLE_LINKER__Toriel-IDE_Release CMakeFiles/Toriel-IDE.dir/Toriel-IDE_autogen/mocs_compilation.cpp.obj CMakeFiles/Toriel-IDE.dir/main.cpp.obj CMakeFiles/Toriel-IDE.dir/torielwindow.cpp.obj CMakeFiles/Toriel-IDE.dir/settings.cpp.obj CMakeFiles/Toriel-IDE.dir/syntax.cpp.obj CMakeFiles/Toriel-IDE.dir/parser.cpp.obj CMakeFiles/Toriel-IDE.dir/package_parser.cpp.obj | C$:/Qt/6.8.0/mingw_64/lib/libQt6Widgets.a C$:/Qt/6.8.0/mingw_64/lib/libQt6Gui.a C$:/Qt/6.8.0/mingw_64/lib/libQt6Core.a C$:/Qt/6.8.0/mingw_64/lib/libQt6EntryPoint.a || Toriel-IDE_autogen Toriel-IDE_autogen_timestamp_deps
+build Toriel-IDE.exe: CXX_EXECUTABLE_LINKER__Toriel-IDE_Release CMakeFiles/Toriel-IDE.dir/Toriel-IDE_autogen/mocs_compilation.cpp.obj CMakeFiles/Toriel-IDE.dir/src/main.cpp.obj CMakeFiles/Toriel-IDE.dir/src/torielwindow.cpp.obj CMakeFiles/Toriel-IDE.dir/src/syntax.cpp.obj CMakeFiles/Toriel-IDE.dir/src/parser.cpp.obj CMakeFiles/Toriel-IDE.dir/src/package_parser.cpp.obj | C$:/Qt/6.8.0/mingw_64/lib/libQt6Widgets.a C$:/Qt/6.8.0/mingw_64/lib/libQt6Gui.a C$:/Qt/6.8.0/mingw_64/lib/libQt6Core.a C$:/Qt/6.8.0/mingw_64/lib/libQt6EntryPoint.a || Toriel-IDE_autogen Toriel-IDE_autogen_timestamp_deps
   FLAGS = -O3 -DNDEBUG
   LINK_FLAGS = -mwindows
   LINK_LIBRARIES = C:/Qt/6.8.0/mingw_64/lib/libQt6Widgets.a  C:/Qt/6.8.0/mingw_64/lib/libQt6Gui.a  C:/Qt/6.8.0/mingw_64/lib/libQt6Core.a  -lmpr  -luserenv  -lmingw32  C:/Qt/6.8.0/mingw_64/lib/libQt6EntryPoint.a  -lshell32  -ld3d11  -ldxgi  -ldxguid  -ld3d12  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32

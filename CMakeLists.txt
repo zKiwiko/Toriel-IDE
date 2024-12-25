@@ -13,9 +13,9 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
-        main.cpp
-        torielwindow.cpp
-        torielwindow.h
+        src/main.cpp
+        src/torielwindow.cpp
+        src/torielwindow.h
         torielwindow.ui
 )
 
@@ -24,10 +24,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 qt_add_executable(Toriel-IDE
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        settings.h settings.cpp
-        syntax.h syntax.cpp
-        parser.h parser.cpp
-        package_parser.h package_parser.cpp
+
+        src/syntax.h src/syntax.cpp
+        src/parser.h src/parser.cpp
+        src/package_parser.h src/package_parser.cpp
     )
 else()
     if(ANDROID)
