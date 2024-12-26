@@ -17,11 +17,9 @@ public:
     QString statusBarColor;
     QString terminalColor;
     QString backgroundColor;
-    QString suggestionsColor;
     QString explorerColor;
 
     QString editorFont;
-    QString suggestionsFont;
     QString explorerFont;
     QString textColor;
 

@@ -1,9 +1,9 @@
-#ifndef TORIELWINDOW_H
-#define TORIELWINDOW_H
+#pragma once
 
 #include <QMainWindow>
 #include "theme.h"
 #include "parser.h"
+#include "package_parser.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -30,16 +30,23 @@ private slots:
 
     void on_actionHide_Terminal_changed();
 
+    void on_BuildAndRun_clicked();
+
 protected:
 
 private:
     Ui::TorielWindow *ui;
     CodeHighlighter *highlighter;
+    Package *pack;
+    Parser *parse;
 
     QString StatusBarMsg();
+    QString currentDir;
     QString currentFile;
+
+    void create_backup();
+    void sendToStudio(const QString &what, bool project);
 
     void setWidgetThemes();
     void highlightCurrentLine();
 };
-#endif // TORIELWINDOW_H

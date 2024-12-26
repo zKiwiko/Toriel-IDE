@@ -12,7 +12,7 @@
 CodeHighlighter::CodeHighlighter(QTextDocument *parent) : QSyntaxHighlighter(parent) {
     RetrieveGPCData();
     RetrieveThemeData();
-    SetSyntaxFomat();
+    SetSyntaxFormat();
 }
 
 void CodeHighlighter::highlightBlock(const QString &text) {
@@ -303,14 +303,12 @@ void CodeHighlighter::RetrieveThemeData() {
     menuBarColor = themeObj.contains("toriel") ? themeObj["toriel"].toObject()["menu-bar-color"].toString() : "#ffffff";
     statusBarColor = themeObj.contains("toriel") ? themeObj["toriel"].toObject()["status-bar-color"].toString() : "#ffffff";
     terminalColor = themeObj.contains("toriel") ? themeObj["toriel"].toObject()["terminal-color"].toString() : "#ffffff";
-    suggestionsColor = themeObj.contains("suggestions") ? themeObj["suggestions"].toObject()["background-color"].toString() : "#ffffff";
     explorerColor = themeObj.contains("explorer") ? themeObj["explorer"].toObject()["background-color"].toString() : "#ffffff";
     backgroundColor = themeObj.contains("toriel") ? themeObj["toriel"].toObject()["background-color"].toString() : "#ffffff";
     lineColor = themeObj.contains("editor") ? themeObj["editor"].toObject()["line-highlight-color"].toString() : "#ffffff";
 
     // Font Families
     editorFont = themeObj.contains("editor") ? themeObj["editor"].toObject()["font-family"].toString() : "Monospace";
-    suggestionsFont = themeObj.contains("suggestions") ? themeObj["suggestions"].toObject()["font-family"].toString() : "Monospace";
     explorerFont = themeObj.contains("explorer") ? themeObj["explorer"].toObject()["font-family"].toString() : "Monospace";
 
     qDebug() << editorColor << " : " << editorFont;

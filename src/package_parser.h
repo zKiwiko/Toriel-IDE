@@ -3,8 +3,10 @@
 #include <QString>
 
 class Package {
-private:
-
 public:
-    void parse_File(QString Path);
+    QString project_main;
+    QString project_version;
+    QString project_name;
+
+    void parse_package(QString &path);
 };

@@ -1,9 +1,10 @@
 #include "torielwindow.h"
-#include "./ui_torielwindow.h"
+#include "../ui_torielwindow.h"
 
 #include <QTextBlock>
 #include <QTimer>
 #include <windows.h>
+#include <QDir>
 
 TorielWindow::TorielWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -13,7 +14,6 @@ TorielWindow::TorielWindow(QWidget *parent)
     highlighter = new CodeHighlighter(ui->code_field->document());
     connect(ui->code_field, &QPlainTextEdit::cursorPositionChanged, this, &TorielWindow::highlightCurrentLine);
     setWidgetThemes();
-    highlightCurrentLine();
 }
 
 TorielWindow::~TorielWindow()
@@ -24,7 +24,6 @@ TorielWindow::~TorielWindow()
 void TorielWindow::setWidgetThemes() {
     QFont cf_font(highlighter->editorFont);
     QFont ex_font(highlighter->explorerFont);
-    QFont sg_font(highlighter->suggestionsFont);
 
     ui->code_field->setFont(cf_font);
     ui->explorer->setFont(ex_font);
@@ -36,9 +35,8 @@ void TorielWindow::setWidgetThemes() {
     ui->menubar->setStyleSheet("background-color: " + highlighter->menuBarColor + ";");
     ui->statusbar->setStyleSheet("background-color: " + highlighter->statusBarColor + ";");
     ui->terminal->setStyleSheet("background-color: " + highlighter->terminalColor + ";");
-    ui->suggestions->setStyleSheet("background-color: " + highlighter->suggestionsColor + ";");
     ui->explorer->setStyleSheet("background-color: " + highlighter->explorerColor + ";");
-    ui->dir_view->setStyleSheet("background-color: " + highlighter->explorerColor + ";");
+    ui->directory_view->setStyleSheet("background-color: " + highlighter->explorerColor + ";");
 }
 
 QString TorielWindow::StatusBarMsg() {
@@ -47,6 +45,12 @@ QString TorielWindow::StatusBarMsg() {
     return QString("Lines: %1 | Chars: %2")
         .arg(ui->code_field->document()->lineCount())
         .arg(charCount);
+}
+
+void TorielWindow::sendToStudio(const QString &what, bool project) {
+    if(project == true) {
+
+    }
 }
 
 void TorielWindow::on_code_field_textChanged()
@@ -92,3 +96,15 @@ void TorielWindow::highlightCurrentLine()
 
     ui->code_field->setExtraSelections(extraSelections);
 }
+
+void TorielWindow::on_BuildAndRun_clicked()
+{
+    QString package_location = (currentDir + "/project.json");
+    if(currentDir.isEmpty()) {
+        sendToStudio(ui->code_field->toPlainText(), false);
+    } else {
+        pack->parse_package(package_location);
+
+    }
+}
+
