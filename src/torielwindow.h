@@ -2,7 +2,7 @@
 #define TORIELWINDOW_H
 
 #include <QMainWindow>
-#include "syntax.h"
+#include "theme.h"
 #include "parser.h"
 
 QT_BEGIN_NAMESPACE

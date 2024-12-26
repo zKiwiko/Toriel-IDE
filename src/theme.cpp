@@ -1,4 +1,4 @@
-#include "syntax.h"
+#include "theme.h"
 
 #include <QRegularExpressionMatchIterator>
 #include <QColor>

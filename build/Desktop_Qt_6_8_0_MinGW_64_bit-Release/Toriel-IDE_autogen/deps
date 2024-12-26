@@ -607,14 +607,14 @@ Toriel-IDE_autogen/timestamp: \
 	C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++\ Projects/Toriel-IDE/build/Desktop_Qt_6_8_0_MinGW_64_bit-Release/CMakeFiles/3.29.3/CMakeRCCompiler.cmake \
 	C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++\ Projects/Toriel-IDE/build/Desktop_Qt_6_8_0_MinGW_64_bit-Release/CMakeFiles/3.29.3/CMakeSystem.cmake \
 	C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++\ Projects/Toriel-IDE/build/Desktop_Qt_6_8_0_MinGW_64_bit-Release/Toriel-IDE_autogen/moc_predefs.h \
-	C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++\ Projects/Toriel-IDE/main.cpp \
-	C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++\ Projects/Toriel-IDE/parser.cpp \
-	C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++\ Projects/Toriel-IDE/parser.h \
-	C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++\ Projects/Toriel-IDE/settings.cpp \
-	C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++\ Projects/Toriel-IDE/settings.h \
-	C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++\ Projects/Toriel-IDE/syntax.cpp \
-	C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++\ Projects/Toriel-IDE/syntax.h \
-	C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++\ Projects/Toriel-IDE/torielwindow.cpp \
-	C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++\ Projects/Toriel-IDE/torielwindow.h \
+	C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++\ Projects/Toriel-IDE/src/main.cpp \
+	C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++\ Projects/Toriel-IDE/src/package_parser.cpp \
+	C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++\ Projects/Toriel-IDE/src/package_parser.h \
+	C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++\ Projects/Toriel-IDE/src/parser.cpp \
+	C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++\ Projects/Toriel-IDE/src/parser.h \
+	C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++\ Projects/Toriel-IDE/src/theme.cpp \
+	C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++\ Projects/Toriel-IDE/src/theme.h \
+	C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++\ Projects/Toriel-IDE/src/torielwindow.cpp \
+	C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++\ Projects/Toriel-IDE/src/torielwindow.h \
 	C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++\ Projects/Toriel-IDE/torielwindow.ui \
 	C:/Qt/Tools/CMake_64/bin/cmake.exe

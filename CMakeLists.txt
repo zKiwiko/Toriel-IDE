@@ -24,8 +24,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 qt_add_executable(Toriel-IDE
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-
-        src/syntax.h src/syntax.cpp
+        src/theme.h src/theme.cpp
         src/parser.h src/parser.cpp
         src/package_parser.h src/package_parser.cpp
     )

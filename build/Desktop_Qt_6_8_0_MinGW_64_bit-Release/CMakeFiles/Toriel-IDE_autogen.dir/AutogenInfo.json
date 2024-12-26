@@ -308,9 +308,9 @@
 			null
 		],
 		[
-			"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/src/syntax.h",
+			"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/src/theme.h",
 			"MU",
-			"UVLADIE3JM/moc_syntax.cpp",
+			"UVLADIE3JM/moc_theme.cpp",
 			null
 		],
 		[
@@ -408,7 +408,7 @@
 			null
 		],
 		[
-			"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/src/syntax.cpp",
+			"C:/Users/kiwik/OneDrive/Desktop/Code-Projects/C++ Projects/Toriel-IDE/src/theme.cpp",
 			"MU",
 			null
 		],

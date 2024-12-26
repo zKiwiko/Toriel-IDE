@@ -1,5 +1,5 @@
 #include "torielwindow.h"
-#include "ui_torielwindow.h"
+#include "./ui_torielwindow.h"
 
 #include <QTextBlock>
 #include <QTimer>
@@ -13,6 +13,7 @@ TorielWindow::TorielWindow(QWidget *parent)
     highlighter = new CodeHighlighter(ui->code_field->document());
     connect(ui->code_field, &QPlainTextEdit::cursorPositionChanged, this, &TorielWindow::highlightCurrentLine);
     setWidgetThemes();
+    highlightCurrentLine();
 }
 
 TorielWindow::~TorielWindow()
@@ -37,6 +38,7 @@ void TorielWindow::setWidgetThemes() {
     ui->terminal->setStyleSheet("background-color: " + highlighter->terminalColor + ";");
     ui->suggestions->setStyleSheet("background-color: " + highlighter->suggestionsColor + ";");
     ui->explorer->setStyleSheet("background-color: " + highlighter->explorerColor + ";");
+    ui->dir_view->setStyleSheet("background-color: " + highlighter->explorerColor + ";");
 }
 
 QString TorielWindow::StatusBarMsg() {

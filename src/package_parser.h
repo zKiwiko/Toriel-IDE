@@ -1,8 +1,10 @@
 #pragma once
 
+#include <QString>
+
 class Package {
 private:
-    QString
-public:
 
+public:
+    void parse_File(QString Path);
 };
