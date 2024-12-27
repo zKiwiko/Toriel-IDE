@@ -37,10 +37,21 @@ private slots:
 
     void on_actionOpen_File_Ctrl_O_triggered();
 
+    void on_actionSave_File_Ctrl_S_triggered();
+
+    void on_actionClose_File_triggered();
+
+    void on_actionClose_Project_triggered();
+
+    void on_actionGPC_Docs_triggered();
+
+    void on_actionRepository_triggered();
+
 private:
     QString currentDir;
     QString currentFile;
     QString currentFileName;
+    QString toriel_ver = "a0.0.1";
 
     Ui::TorielWindow *ui;
     CodeHighlighter *highlighter;
@@ -50,6 +61,8 @@ private:
     QString StatusBarMsg();
 
     void create_backup();
+    void tprint(const QString &what); // prints to the terminal in Toriel
+    void checkForUpdate();
 
     QColor adjustGlow(const QColor& color, int adjustment);
 

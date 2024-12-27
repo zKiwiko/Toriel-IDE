@@ -283,6 +283,8 @@ background-color: lighter;
     <addaction name="actionOpen_File_Ctrl_O"/>
     <addaction name="actionOpen_Folder"/>
     <addaction name="actionSave_File_Ctrl_S"/>
+    <addaction name="actionClose_File"/>
+    <addaction name="actionClose_Project"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
@@ -314,8 +316,8 @@ background-color: lighter;
    <widget class="QMenu" name="menuTools">
     <property name="geometry">
      <rect>
-      <x>383</x>
-      <y>115</y>
+      <x>352</x>
+      <y>124</y>
       <width>175</width>
       <height>116</height>
      </rect>
@@ -422,6 +424,22 @@ background-color: lighter;
   <action name="actionStudio_Sync_FIx">
    <property name="text">
     <string>Studio Sync FIx</string>
+   </property>
+  </action>
+  <action name="actionClose_File">
+   <property name="text">
+    <string>Close File</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+K</string>
+   </property>
+  </action>
+  <action name="actionClose_Project">
+   <property name="text">
+    <string>Close Project</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+K</string>
    </property>
   </action>
  </widget>

@@ -9,6 +9,15 @@
 #include <QFileSystemModel>
 #include <QFileIconProvider>
 #include <QThread>
+#include <QDesktopServices>
+#include <QUrl>
+#include <QTime>
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkReply>
+#include <QVersionNumber>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QMessageBox>
 
 TorielWindow::TorielWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -20,6 +29,8 @@ TorielWindow::TorielWindow(QWidget *parent)
     studio = new ZenStudio();
     connect(ui->code_field, &QPlainTextEdit::cursorPositionChanged, this, &TorielWindow::highlightCurrentLine);
     setWidgetThemes();
+    checkForUpdate();
+    tprint(QTime::currentTime().toString("hh:mm:ss") + " | Toriel IDE version: " + toriel_ver);
 }
 
 TorielWindow::~TorielWindow()
@@ -27,6 +38,50 @@ TorielWindow::~TorielWindow()
     delete ui;
     delete parse;
     delete studio;
+}
+
+void TorielWindow::tprint(const QString &what) {
+    ui->terminal->appendPlainText(what);
+}
+
+void TorielWindow::checkForUpdate() {
+    QNetworkAccessManager *manager = new QNetworkAccessManager();
+
+    QUrl url("https://api.github.com/repos/zKiwiko/Toriel-IDE/releases/latest");
+    QNetworkRequest request(url);
+
+    QObject::connect(manager, &QNetworkAccessManager::finished, [this, manager](QNetworkReply *reply) {
+    if (reply->error() != QNetworkReply::NoError) {
+        tprint(QTime::currentTime().toString("hh:mm:ss") + " | Failed to check for updates: " + reply->errorString());
+            reply->deleteLater();
+        manager->deleteLater();
+        return;
+    }
+
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(reply->readAll());
+        QJsonObject release = jsonDoc.object();
+
+        QString latestTag = release.value("tag_name").toString();
+        if (latestTag.isEmpty()) {
+            tprint(QTime::currentTime().toString("hh:mm:ss") + " | No release information available.");
+            reply->deleteLater();
+            manager->deleteLater();
+            return;
+        }
+
+        QVersionNumber currentVer = QVersionNumber::fromString(this->toriel_ver);
+        QVersionNumber latestVer = QVersionNumber::fromString(latestTag);
+
+        if (latestVer > currentVer) {
+            tprint(QTime::currentTime().toString("hh:mm:ss") + " | A new version of Toriel is available.\nhttps://github.com/zKiwiko/Toriel-IDE\n");
+        } else {
+            tprint(QTime::currentTime().toString("hh:mm:ss") + " | You're Up-To-Date.");
+        }
+
+        reply->deleteLater();
+        manager->deleteLater();
+    });
+    manager->get(request);
 }
 
 void TorielWindow::setWidgetThemes() {
@@ -116,6 +171,7 @@ void TorielWindow::on_BuildAndRun_clicked() {
     }
 
     try {
+        tprint(QTime::currentTime().toString("hh:mm:ss") + " | Parsing Main source file...");
         parse->parse_File(package_location);
     } catch (const std::exception& ex) {
         QMessageBox::critical(this, "Error", QString("Exception in parse_File: %1").arg(ex.what()));
@@ -126,7 +182,6 @@ void TorielWindow::on_BuildAndRun_clicked() {
     }
 
     QString main_location = currentDir + "/" + parse->pr_src;
-    qDebug() << "main location: " << main_location;
     if (!QFile::exists(main_location)) {
         QMessageBox::critical(this, "Error", "Main file not found.");
         return;
@@ -134,13 +189,15 @@ void TorielWindow::on_BuildAndRun_clicked() {
     QStringList processedFiles;
 
     try {
+        tprint(QTime::currentTime().toString("hh:mm:ss") + " | Processing Main source file and inclusions...");
         QString processedCode = parse->processMain(main_location, processedFiles);
         if (processedCode.isEmpty()) {
             QMessageBox::critical(this, "Error", "Processed code is empty.");
             return;
         }
+        tprint(QTime::currentTime().toString("hh:mm:ss") + " | Sending to Zen Studio");
         studio->SendToStudio(processedCode);
-        qDebug() << processedCode;
+        tprint(QTime::currentTime().toString("hh:mm:ss") + " | Sent to Zen Studio");
     } catch (const std::exception& ex) {
         QMessageBox::critical(this, "Error", QString("Exception: %1").arg(ex.what()));
         return;
@@ -149,7 +206,6 @@ void TorielWindow::on_BuildAndRun_clicked() {
         return;
     }
 }
-
 
 QColor TorielWindow::adjustGlow(const QColor &color, int adjustment) {
     QColor HSL = color.toHsl();
@@ -184,8 +240,8 @@ void TorielWindow::on_actionOpen_Folder_triggered()
 {
     QString directory = QFileDialog::getExistingDirectory(nullptr, "Select Folder", QDir::homePath(), QFileDialog::ShowDirsOnly);
     currentDir = directory;
-    qDebug() << currentDir;
     setTreeView();
+    tprint(QTime::currentTime().toString("hh:mm:ss") + " | Opened folder: " + currentDir);
 }
 
 void TorielWindow::on_actionOpen_File_Ctrl_O_triggered()
@@ -219,4 +275,62 @@ void TorielWindow::on_actionOpen_File_Ctrl_O_triggered()
     f.close();
 
     ui->code_field->setPlainText(QString::fromUtf8(data));
+    tprint(QTime::currentTime().toString("hh:mm:ss") + " | Opened file: " + currentFileName);
 }
+
+void TorielWindow::on_actionSave_File_Ctrl_S_triggered()
+{
+    QString filePath = currentFile;
+
+    if (filePath.isEmpty()) {
+        filePath = QFileDialog::getSaveFileName(this, "Save File", QDir::homePath(), "GPC Files (*.gpc);;All Files (*)");
+
+        if (filePath.isEmpty()) {
+            return;
+        }
+        currentFile = filePath;
+        QFileInfo fi(currentFile);
+        currentFileName = fi.fileName();
+    }
+
+    QFile f(filePath);
+    if (!f.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QMessageBox::critical(nullptr, "Error", "Could not save file: " + filePath);
+        return;
+    }
+
+    QString saveWhat = ui->code_field->toPlainText();
+    QTextStream out(&f);
+    out << saveWhat << "\n\n//Toriel-IDE Version: " + toriel_ver;
+    f.close();
+    tprint(QTime::currentTime().toString("hh:mm:ss") + " | Saved file: " + currentFileName);
+}
+
+void TorielWindow::on_actionClose_File_triggered()
+{
+    tprint(QTime::currentTime().toString("hh:mm:ss") + " | Closed file: " + currentFile);
+    currentFile.clear();
+    ui->code_field->clear();
+}
+
+void TorielWindow::on_actionClose_Project_triggered()
+{
+    tprint(QTime::currentTime().toString("hh:mm:ss") + " | Closed project: " + currentDir);
+    currentDir.clear();
+    currentFile.clear();
+    ui->code_field->clear();
+    ui->directory_view->setModel(nullptr);
+}
+
+void TorielWindow::on_actionGPC_Docs_triggered()
+{
+    QUrl url("https://guide.cronus.support/gpc");
+    QDesktopServices::openUrl(url);
+}
+
+void TorielWindow::on_actionRepository_triggered()
+{
+    QUrl url("https://github.com/zKiwiko/Toriel-IDE");
+    QDesktopServices::openUrl(url);
+}
+
