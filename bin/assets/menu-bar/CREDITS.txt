@@ -1,0 +1,4 @@
+All of these Icons were downloaded from FontAwesome:
+https://fontawesome.com/v6/search
+
+then edited in VSCode to set their color to white to Match Toriel IDE's Theme
