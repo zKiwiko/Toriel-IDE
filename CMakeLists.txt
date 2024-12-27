@@ -43,6 +43,14 @@ endif()
 
 target_link_libraries(Toriel-IDE PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
+add_custom_command(
+    TARGET Toriel-IDE POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/bin
+        ${CMAKE_BINARY_DIR}/bin
+)
+
+
 if(${QT_VERSION} VERSION_LESS 6.1.0)
   set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.Toriel-IDE)
 endif()

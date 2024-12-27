@@ -8,5 +8,5 @@ public:
     QString project_version;
     QString project_name;
 
-    void parse_package(QString &path);
+    void parse_File(QString &path);
 };

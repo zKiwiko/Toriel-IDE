@@ -10,31 +10,24 @@
 void Package::parse_File(QString &path) {
     QFile file(path);
 
-    if(!file.open(QIODevice::ReadOnly)) {
+    if (!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::critical(nullptr, "Error", "Unable to open project.json file.");
         return;
     }
 
     QByteArray data = file.readAll();
-
     file.close();
 
     QJsonDocument doc = QJsonDocument::fromJson(data);
+    if (doc.isNull() || !doc.isObject()) {
+        QMessageBox::critical(nullptr, "Error", "Invalid JSON format in project.json.");
+        return;
+    }
+
     QJsonObject obj = doc.object();
 
-    if(doc.isNull() || !doc.isObject()) {
-        return;
-    }
-
-    if(!obj.contains("main")) {
-        QMessageBox::critical(nullptr, "Error", "Your 'project.json' file does not contain the main file definition.");
-        return;
-    }
-    if(!obj.contains("title")) {
-        QMessageBox::critical(nullptr, "Error", "Your 'project.json' file does not contain the projects name definition.");
-        return;
-    }
-    if(!obj.contains("version")) {
-        QMessageBox::critical(nullptr, "Error", "Your 'project.json' file does not contains the version definition.");
+    if (!obj.contains("main") || !obj.contains("name") || !obj.contains("version")) {
+        QMessageBox::critical(nullptr, "Error", "Missing required fields in project.json.");
         return;
     }
 

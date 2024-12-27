@@ -1,10 +1,12 @@
 #pragma once
 
 #include <QString>
+#include <QStringList>
 
 class Parser {
+    // Not really a parser, but i couldnt think of another name for this class
 private:
 
 public:
-    void parse_main(const QString &file);
+    static QString processMain(const QString &mainPath, QStringList& processedFiles);
 };

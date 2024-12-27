@@ -1,9 +1,13 @@
 #pragma once
 
 #include <QMainWindow>
+#include <QColor>
+#include <QFileDialog>
+
 #include "theme.h"
 #include "parser.h"
 #include "package_parser.h"
+#include "zenstudio.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -26,27 +30,32 @@ private slots:
 
     void on_actionHide_Explorer_changed();
 
-    void on_actionHide_Suggestions_changed();
-
     void on_actionHide_Terminal_changed();
 
     void on_BuildAndRun_clicked();
 
-protected:
+    void on_actionOpen_Folder_triggered();
+
+    void on_actionOpen_File_Ctrl_O_triggered();
 
 private:
+    QString currentDir;
+    QString currentFile;
+    QString currentFileName;
+
     Ui::TorielWindow *ui;
     CodeHighlighter *highlighter;
     Package *pack;
     Parser *parse;
+    ZenStudio *studio;
 
     QString StatusBarMsg();
-    QString currentDir;
-    QString currentFile;
 
     void create_backup();
-    void sendToStudio(const QString &what, bool project);
+
+    QColor adjustGlow(const QColor& color, int adjustment);
 
     void setWidgetThemes();
     void highlightCurrentLine();
+    void setTreeView();
 };

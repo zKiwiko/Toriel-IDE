@@ -19,6 +19,9 @@
   <property name="windowTitle">
    <string>Toriel IDE</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <property name="enabled">
     <bool>true</bool>
@@ -119,37 +122,17 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="create_backup">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>138</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>138</width>
-           <height>27</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Create Backup</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QTreeView" name="directory_view">
          <property name="minimumSize">
           <size>
            <width>138</width>
            <height>0</height>
           </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QTreeView {
+border-radius: 0px;
+}</string>
          </property>
         </widget>
        </item>
@@ -197,6 +180,15 @@
 	border-radius: 0px;
 }</string>
          </property>
+         <property name="horizontalScrollBarPolicy">
+          <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
+         </property>
+         <property name="lineWrapMode">
+          <enum>QPlainTextEdit::LineWrapMode::NoWrap</enum>
+         </property>
+         <property name="plainText">
+          <string notr="true"/>
+         </property>
          <property name="tabStopDistance">
           <double>40.000000000000000</double>
          </property>
@@ -215,6 +207,11 @@
            <width>16777215</width>
            <height>111</height>
           </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPlainTextEdit {
+border-radius: 0px;
+}</string>
          </property>
         </widget>
        </item>
@@ -244,7 +241,13 @@
         </widget>
        </item>
        <item>
-        <widget class="QListView" name="explorer"/>
+        <widget class="QListView" name="explorer">
+         <property name="styleSheet">
+          <string notr="true">QListView {
+border-radius: 0px;
+}</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -263,12 +266,18 @@
    <property name="layoutDirection">
     <enum>Qt::LayoutDirection::LeftToRight</enum>
    </property>
+   <property name="styleSheet">
+    <string notr="true">QMenuBar::item::hover {
+background-color: lighter;
+}</string>
+   </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>File</string>
     </property>
     <property name="icon">
-     <iconset theme="QIcon::ThemeIcon::FolderOpen"/>
+     <iconset>
+      <normaloff>bin/assets/menu-bar/folder-solid.svg</normaloff>bin/assets/menu-bar/folder-solid.svg</iconset>
     </property>
     <addaction name="actionNew_File_Ctrl_N"/>
     <addaction name="actionOpen_File_Ctrl_O"/>
@@ -280,7 +289,8 @@
      <string>Settings</string>
     </property>
     <property name="icon">
-     <iconset theme="QIcon::ThemeIcon::DriveOptical"/>
+     <iconset>
+      <normaloff>bin/assets/menu-bar/gear-solid.svg</normaloff>bin/assets/menu-bar/gear-solid.svg</iconset>
     </property>
     <addaction name="actionChoose_Theme"/>
     <addaction name="separator"/>
@@ -294,16 +304,38 @@
      <string>View</string>
     </property>
     <property name="icon">
-     <iconset theme="QIcon::ThemeIcon::SystemSearch"/>
+     <iconset>
+      <normaloff>bin/assets/menu-bar/magnifying-glass-solid.svg</normaloff>bin/assets/menu-bar/magnifying-glass-solid.svg</iconset>
     </property>
     <addaction name="actionHide_Buttons"/>
     <addaction name="actionHide_Explorer"/>
-    <addaction name="actionHide_Suggestions"/>
     <addaction name="actionHide_Terminal"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="geometry">
+     <rect>
+      <x>383</x>
+      <y>115</y>
+      <width>175</width>
+      <height>116</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>bin/assets/menu-bar/wrench-solid.svg</normaloff>bin/assets/menu-bar/wrench-solid.svg</iconset>
+    </property>
+    <addaction name="actionImage_Generator"/>
+    <addaction name="separator"/>
+    <addaction name="separator"/>
+    <addaction name="actionStudio_Sync_FIx"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
    <addaction name="menuSettings"/>
+   <addaction name="menuTools"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionNew_File_Ctrl_N">
@@ -351,14 +383,6 @@
     <string>Hide Explorer</string>
    </property>
   </action>
-  <action name="actionHide_Suggestions">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Hide Suggestions</string>
-   </property>
-  </action>
   <action name="actionHide_Terminal">
    <property name="checkable">
     <bool>true</bool>
@@ -385,6 +409,19 @@
   <action name="actionOpen_Folder">
    <property name="text">
     <string>Open Folder...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+O</string>
+   </property>
+  </action>
+  <action name="actionImage_Generator">
+   <property name="text">
+    <string>Image Generator</string>
+   </property>
+  </action>
+  <action name="actionStudio_Sync_FIx">
+   <property name="text">
+    <string>Studio Sync FIx</string>
    </property>
   </action>
  </widget>

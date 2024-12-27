@@ -2,14 +2,14 @@
 
 #include <string>
 #include <vector>
-#include <windows.h>
 #include <QString>
+#include <windows.h>
 
 class ZenStudio {
 private:
     enum RemoteCMD {
         GpcTab = 1,
-        BulildandRun = 2
+        BuildandRun = 2
     };
 
     struct CopyData {
