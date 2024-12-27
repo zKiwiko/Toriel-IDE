@@ -47,6 +47,8 @@ private slots:
 
     void on_actionRepository_triggered();
 
+    void on_directory_view_doubleClicked(const QModelIndex &index);
+
 private:
     QString currentDir;
     QString currentFile;

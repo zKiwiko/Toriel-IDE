@@ -130,7 +130,7 @@ void TorielWindow::on_actionHide_Buttons_changed()
 
 void TorielWindow::on_actionHide_Explorer_changed()
 {
-    ui->explorer->setVisible(!ui->actionHide_Explorer->isChecked());
+    ui->Extras_Container->setVisible(!ui->actionHide_Explorer->isChecked());
 }
 
 void TorielWindow::on_actionHide_Terminal_changed()
@@ -301,7 +301,7 @@ void TorielWindow::on_actionSave_File_Ctrl_S_triggered()
 
     QString saveWhat = ui->code_field->toPlainText();
     QTextStream out(&f);
-    out << saveWhat << "\n\n//Toriel-IDE Version: " + toriel_ver;
+    out << saveWhat;
     f.close();
     tprint(QTime::currentTime().toString("hh:mm:ss") + " | Saved file: " + currentFileName);
 }
@@ -332,5 +332,39 @@ void TorielWindow::on_actionRepository_triggered()
 {
     QUrl url("https://github.com/zKiwiko/Toriel-IDE");
     QDesktopServices::openUrl(url);
+}
+
+
+void TorielWindow::on_directory_view_doubleClicked(const QModelIndex &index)
+{
+    if(!index.isValid()) {
+        tprint(QTime::currentTime().toString("hh:mm:ss") + " | Tree Err: Invalid Index");
+        return;
+    }
+
+    QFileSystemModel *model = qobject_cast<QFileSystemModel*>(ui->directory_view->model());
+    if(!model) {
+        return;
+    }
+    QString filePath = model->filePath(index);
+    QFileInfo fileInfo(filePath);
+    if (!fileInfo.isFile()) {
+        tprint(QTime::currentTime().toString("hh:mm:ss") + " | Error: Selected item is not a file");
+        return;
+    }
+
+    currentFile = filePath;
+    QFileInfo fi(currentFile);
+    currentFileName = fi.fileName();
+
+    QFile inputfile(currentFile);
+    if(inputfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream in(&inputfile);
+        QString fileContent = in.readAll();
+        ui->code_field->setPlainText(fileContent);
+        inputfile.close();
+    } else {
+        QMessageBox::warning(nullptr, "Error", "Could not open the selected file");
+    }
 }
 

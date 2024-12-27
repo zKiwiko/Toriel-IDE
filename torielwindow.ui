@@ -190,7 +190,7 @@ border-radius: 0px;
           <string notr="true"/>
          </property>
          <property name="tabStopDistance">
-          <double>40.000000000000000</double>
+          <double>30.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -234,7 +234,7 @@ border-radius: 0px;
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="QLabel" name="label_2">
+        <widget class="QLabel" name="explorer_label">
          <property name="text">
           <string>Explorer</string>
          </property>
