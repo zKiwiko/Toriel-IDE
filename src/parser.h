@@ -7,10 +7,10 @@ class Parser {
 private:
 
 public:
-    QString project_main;
-    QString project_version;
-    QString project_name;
+    QString pr_src;
+    QString pr_ver;
+    QString pr_name;
 
-    void parse_File(QString &path); // parses the package file to define main, name and version
+    void parse_File(const QString &path); // parses the package file to define main, name and version
     QString processMain(const QString &mainPath, QStringList& processedFiles);
 };

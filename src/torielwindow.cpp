@@ -16,6 +16,8 @@ TorielWindow::TorielWindow(QWidget *parent)
 {
     ui->setupUi(this);
     highlighter = new CodeHighlighter(ui->code_field->document());
+    parse = new Parser();
+    studio = new ZenStudio();
     connect(ui->code_field, &QPlainTextEdit::cursorPositionChanged, this, &TorielWindow::highlightCurrentLine);
     setWidgetThemes();
 }
@@ -23,6 +25,8 @@ TorielWindow::TorielWindow(QWidget *parent)
 TorielWindow::~TorielWindow()
 {
     delete ui;
+    delete parse;
+    delete studio;
 }
 
 void TorielWindow::setWidgetThemes() {
@@ -99,28 +103,53 @@ void TorielWindow::highlightCurrentLine()
 }
 
 void TorielWindow::on_BuildAndRun_clicked() {
-    if (currentDir.isEmpty()) {
-        studio->SendToStudio(ui->code_field->toPlainText());
-    } else {
-        QString package_location = currentDir + "/project.json";
-        parse->parse_File(package_location);
 
-        if (parse->project_main.isEmpty()) {
-            QMessageBox::critical(this, "Error", "Main file not specified in project.json.");
+    if (currentDir.isEmpty() || !QDir(currentDir).exists()) {
+        QMessageBox::critical(this, "Error", "Invalid project directory.");
+        return;
+    }
+
+    QString package_location = currentDir + "/project.json";
+    if (!QFile::exists(package_location)) {
+        QMessageBox::critical(this, "Error", "Missing project.json file.");
+        return;
+    }
+
+    try {
+        parse->parse_File(package_location);
+    } catch (const std::exception& ex) {
+        QMessageBox::critical(this, "Error", QString("Exception in parse_File: %1").arg(ex.what()));
+        return;
+    } catch (...) {
+        QMessageBox::critical(this, "Error", "Unknown exception in parse_File.");
+        return;
+    }
+
+    QString main_location = currentDir + "/" + parse->pr_src;
+    qDebug() << "main location: " << main_location;
+    if (!QFile::exists(main_location)) {
+        QMessageBox::critical(this, "Error", "Main file not found.");
+        return;
+    }
+    QStringList processedFiles;
+
+    try {
+        QString processedCode = parse->processMain(main_location, processedFiles);
+        if (processedCode.isEmpty()) {
+            QMessageBox::critical(this, "Error", "Processed code is empty.");
             return;
         }
-
-        QString main_location = currentDir + "/" + parse->project_main + ".gpc";
-
-        QStringList processedFiles;
-        try {
-            QString processedCode = parse->processMain(main_location, processedFiles);
-            studio->SendToStudio(processedCode);
-        } catch (const std::exception& ex) {
-            QMessageBox::critical(this, "Error", ex.what());
-        }
+        studio->SendToStudio(processedCode);
+        qDebug() << processedCode;
+    } catch (const std::exception& ex) {
+        QMessageBox::critical(this, "Error", QString("Exception: %1").arg(ex.what()));
+        return;
+    } catch (...) {
+        QMessageBox::critical(this, "Error", "Unknown exception occurred.");
+        return;
     }
 }
+
 
 QColor TorielWindow::adjustGlow(const QColor &color, int adjustment) {
     QColor HSL = color.toHsl();
@@ -155,6 +184,7 @@ void TorielWindow::on_actionOpen_Folder_triggered()
 {
     QString directory = QFileDialog::getExistingDirectory(nullptr, "Select Folder", QDir::homePath(), QFileDialog::ShowDirsOnly);
     currentDir = directory;
+    qDebug() << currentDir;
     setTreeView();
 }
 
