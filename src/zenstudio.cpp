@@ -32,7 +32,7 @@ bool ZenStudio::EnumerateProcess(const std::wstring &processName, std::vector<HW
 }
 
 void ZenStudio::SendGPCMessage(RemoteCMD cmd, const QString &message) {
-    QByteArray messageBytes = message.toUtf8(); // Proper conversion to UTF-8
+    QByteArray messageBytes = message.toUtf8();
     COPYDATASTRUCT cds;
     cds.dwData = static_cast<ULONG_PTR>(cmd);
     cds.cbData = static_cast<DWORD>(messageBytes.size());
@@ -40,14 +40,12 @@ void ZenStudio::SendGPCMessage(RemoteCMD cmd, const QString &message) {
 
     HWND zenStudioWindow = FindWindow(nullptr, L"ZenStudio");
     if (!zenStudioWindow) {
-        std::cerr << "ZenStudio window not found.\n";
         return;
     }
 
     DWORD processId = 0;
     GetWindowThreadProcessId(zenStudioWindow, &processId);
     if (processId == 0) {
-        std::cerr << "Failed to retrieve ZenStudio process ID.\n";
         return;
     }
 
@@ -56,8 +54,6 @@ void ZenStudio::SendGPCMessage(RemoteCMD cmd, const QString &message) {
         for (auto hwnd : hwndList) {
             SendMessage(hwnd, WM_COPYDATA, 0, reinterpret_cast<LPARAM>(&cds));
         }
-    } else {
-        std::cerr << "Failed to enumerate ZenStudio process windows.\n";
     }
 }
 

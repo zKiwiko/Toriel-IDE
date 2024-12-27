@@ -4,9 +4,13 @@
 #include <QStringList>
 
 class Parser {
-    // Not really a parser, but i couldnt think of another name for this class
 private:
 
 public:
-    static QString processMain(const QString &mainPath, QStringList& processedFiles);
+    QString project_main;
+    QString project_version;
+    QString project_name;
+
+    void parse_File(QString &path); // parses the package file to define main, name and version
+    QString processMain(const QString &mainPath, QStringList& processedFiles);
 };

@@ -26,7 +26,7 @@ qt_add_executable(Toriel-IDE
         ${PROJECT_SOURCES}
         src/theme.h src/theme.cpp
         src/parser.h src/parser.cpp
-        src/package_parser.cpp src/package_parser.h
+
         src/zenstudio.h src/zenstudio.cpp
     )
 else()

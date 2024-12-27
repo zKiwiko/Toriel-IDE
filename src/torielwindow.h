@@ -6,7 +6,6 @@
 
 #include "theme.h"
 #include "parser.h"
-#include "package_parser.h"
 #include "zenstudio.h"
 
 QT_BEGIN_NAMESPACE
@@ -45,7 +44,6 @@ private:
 
     Ui::TorielWindow *ui;
     CodeHighlighter *highlighter;
-    Package *pack;
     Parser *parse;
     ZenStudio *studio;
 

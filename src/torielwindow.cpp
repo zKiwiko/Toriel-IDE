@@ -103,14 +103,14 @@ void TorielWindow::on_BuildAndRun_clicked() {
         studio->SendToStudio(ui->code_field->toPlainText());
     } else {
         QString package_location = currentDir + "/project.json";
-        pack->parse_File(package_location);
+        parse->parse_File(package_location);
 
-        if (pack->project_main.isEmpty()) {
+        if (parse->project_main.isEmpty()) {
             QMessageBox::critical(this, "Error", "Main file not specified in project.json.");
             return;
         }
 
-        QString main_location = currentDir + "/" + pack->project_main + ".gpc";
+        QString main_location = currentDir + "/" + parse->project_main + ".gpc";
 
         QStringList processedFiles;
         try {
