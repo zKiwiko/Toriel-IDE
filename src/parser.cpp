@@ -65,7 +65,7 @@ QString Parser::processMain(const QString &mainPath, QStringList& processedFiles
 
     while (!inStream.atEnd()) {
         QString line = inStream.readLine();
-        if (line.trimmed().startsWith("// include")) {
+        if (line.trimmed().startsWith("@include")) {
             QString includeFileName = line.mid(line.indexOf("include") + 7).trimmed();
 
             if (includeFileName.isEmpty()) {

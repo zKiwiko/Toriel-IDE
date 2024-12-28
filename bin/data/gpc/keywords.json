@@ -14,6 +14,7 @@
         "break",
         "enum",
         "define",
-        "const"
+        "const",
+	"include"
     ]
 }

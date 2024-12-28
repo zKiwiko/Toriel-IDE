@@ -48,7 +48,7 @@ void AutoComplete::Setup(QPlainTextEdit *editor) {
     completer->setCompletionMode(QCompleter::PopupCompletion);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
 
-    QStringListModel* model = new QStringListModel(keywords, completer);
+    QStringListModel* model = new QStringListModel((keywords, dataTypes, builtinFunctions, constants), completer);
     completer->setModel(model);
 
     editor->installEventFilter(this);

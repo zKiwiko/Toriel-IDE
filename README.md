@@ -110,13 +110,13 @@ The project.json file is essential for defining the main source file of your pro
 ### Including Additional Files
 To include other source files, use the following syntax:
 ```js
-// include filename.gpc
+@include filename.gpc
 
 you can also use
 
-// include SubDir/filename.gpc
+@include SubDir/filename.gpc
 ```
-This approach emulates how C++ compilers compile. By replacing the `// include` directive with the content from the referenced file before sending the combined data to Zen Studio.
+This approach emulates how C++ compilers compile. By replacing the `@include` directive with the content from the referenced file before sending the combined data to Zen Studio.
 
 ### Example
 **Included File** (`example.gpc`)
@@ -127,7 +127,7 @@ function add(a, b) {
 ```
 **Main Source File** (`main.gpc`)
 ```js
-// include example.gpc
+@include example.gpc
 main {
     set_val(TRACE_1, add(10, 10));
 }
