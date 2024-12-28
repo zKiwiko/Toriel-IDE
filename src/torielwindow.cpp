@@ -18,6 +18,10 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QMessageBox>
+#include <QImage>
+#include <cmath>
+#include <vector>
+#include <QClipboard>
 
 TorielWindow::TorielWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -365,6 +369,66 @@ void TorielWindow::on_directory_view_doubleClicked(const QModelIndex &index)
         inputfile.close();
     } else {
         QMessageBox::warning(nullptr, "Error", "Could not open the selected file");
+    }
+}
+
+
+void TorielWindow::on_actionImage_Generator_triggered()
+{
+    QString filePath = QFileDialog::getOpenFileName(nullptr, "Select Image", QDir::rootPath(), "Images (*.png *.jpg);;All Files (*)");
+    if(filePath.isEmpty()) {
+        return;
+    }
+
+    QImage img(filePath);
+    if (img.isNull()) {
+        QMessageBox::warning(nullptr, "Error", "Failed to load the image!");
+        return;
+    }
+
+    int width = std::clamp(img.width(), 0, 127);
+    int height = std::clamp(img.height(), 0, 63);
+
+    int arraySize = std::ceil(double(width * height) / 8);
+    std::vector<int> ints(arraySize, 0);
+
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            QColor color = img.pixelColor(x, y);
+            if(color.red() > 127) {
+                int i = y * width + x;
+                ints[i >> 3] |= 1 << (7 - (i & 7));
+            }
+        }
+    }
+
+    QStringList list;
+    list.append(QString("%1,%2").arg(width).arg(height));
+    for(int i : ints) {
+        list.append(QString::number(i));
+    }
+
+    QString clipboardText = list.join(",");
+    QClipboard *clipboard = QGuiApplication::clipboard();
+
+    clipboard->setText(clipboardText);
+    tprint(QTime::currentTime().toString("hh:mm:ss") + " | Generated Image copied to clipboard.");
+
+    QDir dir;
+    if (!dir.exists("bin/data/generated/images")) {
+        dir.mkpath("bin/data/generated/images");
+    }
+
+    QFile file("bin/data/generated/images/array_backup.txt");
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&file);
+        out << QString("%1,%2,").arg(width).arg(height);
+        for (int i : ints) {
+            out << i << ",";
+        }
+        file.close();
+    } else {
+        QMessageBox::warning(nullptr, "Error", "Failed to save the backup file!");
     }
 }
 

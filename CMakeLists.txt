@@ -8,6 +8,7 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(app_icon_resource_windows ${CMAKE_SOURCE_DIR}/bin/assets/icon/app.o)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Network)
@@ -24,9 +25,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 qt_add_executable(Toriel-IDE
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        "${app_icon_resource_windows}"
         src/theme.h src/theme.cpp
         src/parser.h src/parser.cpp
-
         src/zenstudio.h src/zenstudio.cpp
     )
 else()
@@ -41,7 +42,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(Toriel-IDE PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt6::Network)
+target_link_libraries(Toriel-IDE PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt6::Network ${app_icon_resource_windows})
 
 add_custom_command(
     TARGET Toriel-IDE POST_BUILD

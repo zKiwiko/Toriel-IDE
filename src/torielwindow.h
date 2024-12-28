@@ -49,6 +49,8 @@ private slots:
 
     void on_directory_view_doubleClicked(const QModelIndex &index);
 
+    void on_actionImage_Generator_triggered();
+
 private:
     QString currentDir;
     QString currentFile;

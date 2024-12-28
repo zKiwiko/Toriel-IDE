@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>Toriel IDE</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>bin/assets/icon/toriel.ico</normaloff>bin/assets/icon/toriel.ico</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true"/>
   </property>
@@ -316,8 +320,8 @@ background-color: lighter;
    <widget class="QMenu" name="menuTools">
     <property name="geometry">
      <rect>
-      <x>352</x>
-      <y>124</y>
+      <x>351</x>
+      <y>115</y>
       <width>175</width>
       <height>116</height>
      </rect>
