@@ -11,6 +11,12 @@ class CodeHighlighter : public QSyntaxHighlighter {
 public:
     explicit CodeHighlighter(QTextDocument *parent = nullptr);
     void ReloadThemeData();
+    void RetrieveThemeData();
+
+    QString GPC_Constants;
+    QString GPC_Functions;
+    QString GPC_Keywords;
+    QString GPC_Datatypes;
 
     QString editorColor;
     QString menuBarColor;
@@ -28,10 +34,7 @@ public:
 protected:
     void highlightBlock(const QString& text) override;
 private:
-    QString GPC_Constants;
-    QString GPC_Functions;
-    QString GPC_Keywords;
-    QString GPC_Datatypes;
+
 
     QString GPC_Boolean = { "(TRUE|FALSE)" };
     QString functionNamePattern = R"(\b[A-Za-z_]\w*(?:\s*\())";
@@ -69,7 +72,6 @@ private:
     QString commentsFont;
 
     void RetrieveGPCData();
-    void RetrieveThemeData();
     void SetSyntaxFormat();
 
     void highlightKeywords(const QString &text);

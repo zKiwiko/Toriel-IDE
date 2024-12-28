@@ -8,6 +8,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QFileDialog>
 
 CodeHighlighter::CodeHighlighter(QTextDocument *parent) : QSyntaxHighlighter(parent) {
     RetrieveGPCData();
@@ -28,6 +29,33 @@ void CodeHighlighter::highlightBlock(const QString &text) {
     highlightDatatypes(text);
     highlightStrings(text);
     highlightComments(text);
+}
+
+void CodeHighlighter::ReloadThemeData() {
+    QString selectedFile = QFileDialog::getOpenFileName(nullptr, "Select a JSON File", "", "*.json");
+
+    if (selectedFile.isEmpty()) {
+        return;
+    }
+
+    QString fileName = QFileInfo(selectedFile).fileName();
+
+    QFile settingsFile("bin/data/settings/settings.json");
+    if (!settingsFile.open(QIODevice::ReadWrite | QIODevice::Text)) {
+        return;
+    }
+
+    QByteArray settingsData = settingsFile.readAll();
+    QJsonDocument settingsDoc = QJsonDocument::fromJson(settingsData);
+    QJsonObject settingsObj = settingsDoc.object();
+
+    settingsObj["theme"] = fileName;
+
+    settingsFile.resize(0);
+    settingsFile.write(QJsonDocument(settingsObj).toJson());
+    settingsFile.close();
+
+    RetrieveThemeData();
 }
 
 void CodeHighlighter::SetSyntaxFormat() {

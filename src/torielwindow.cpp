@@ -28,13 +28,21 @@ TorielWindow::TorielWindow(QWidget *parent)
     , ui(new Ui::TorielWindow)
 {
     ui->setupUi(this);
-    highlighter = new CodeHighlighter(ui->code_field->document());
     parse = new Parser();
     studio = new ZenStudio();
-    connect(ui->code_field, &QPlainTextEdit::cursorPositionChanged, this, &TorielWindow::highlightCurrentLine);
+    highlighter = new CodeHighlighter(ui->code_field->document());
+
+    AutoClosingPairs::Setup(ui->code_field);
+    autocomplete.SetupWords(highlighter->GPC_Keywords, highlighter->GPC_Functions, highlighter->GPC_Datatypes, highlighter->GPC_Constants);
+    autocomplete.Setup(ui->code_field);
+    autocomplete.Style(highlighter->editorColor, highlighter->lineColor);
+
     setWidgetThemes();
     checkForUpdate();
+
     tprint(QTime::currentTime().toString("hh:mm:ss") + " | Toriel IDE version: " + toriel_ver);
+    connect(ui->code_field, &QPlainTextEdit::cursorPositionChanged, this, &TorielWindow::highlightCurrentLine);
+
 }
 
 TorielWindow::~TorielWindow()
@@ -432,3 +440,13 @@ void TorielWindow::on_actionImage_Generator_triggered()
     }
 }
 
+void TorielWindow::on_actionChoose_Theme_triggered()
+{
+    highlighter->ReloadThemeData();
+}
+
+void TorielWindow::on_actionReload_Theme_triggered()
+{
+    highlighter->RetrieveThemeData();
+    setWidgetThemes();
+}

@@ -299,11 +299,12 @@ background-color: lighter;
       <normaloff>bin/assets/menu-bar/gear-solid.svg</normaloff>bin/assets/menu-bar/gear-solid.svg</iconset>
     </property>
     <addaction name="actionChoose_Theme"/>
+    <addaction name="actionReload_Theme"/>
     <addaction name="separator"/>
     <addaction name="actionGPC_Docs"/>
     <addaction name="actionToriel_Docs"/>
-    <addaction name="separator"/>
     <addaction name="actionRepository"/>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -370,7 +371,7 @@ background-color: lighter;
   </action>
   <action name="actionChoose_Theme">
    <property name="text">
-    <string>Choose Theme</string>
+    <string>Choose Theme...</string>
    </property>
   </action>
   <action name="actionHide_Buttons">
@@ -444,6 +445,11 @@ background-color: lighter;
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+K</string>
+   </property>
+  </action>
+  <action name="actionReload_Theme">
+   <property name="text">
+    <string>Reload Theme</string>
    </property>
   </action>
  </widget>

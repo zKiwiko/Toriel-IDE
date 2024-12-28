@@ -7,6 +7,8 @@
 #include "theme.h"
 #include "parser.h"
 #include "zenstudio.h"
+#include "closingpairs.h"
+#include "autocomplete.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -51,6 +53,10 @@ private slots:
 
     void on_actionImage_Generator_triggered();
 
+    void on_actionChoose_Theme_triggered();
+
+    void on_actionReload_Theme_triggered();
+
 private:
     QString currentDir;
     QString currentFile;
@@ -61,11 +67,12 @@ private:
     CodeHighlighter *highlighter;
     Parser *parse;
     ZenStudio *studio;
+    AutoComplete autocomplete;
 
     QString StatusBarMsg();
 
     void create_backup();
-    void tprint(const QString &what); // prints to the terminal in Toriel
+    void tprint(const QString &what);
     void checkForUpdate();
 
     QColor adjustGlow(const QColor& color, int adjustment);
