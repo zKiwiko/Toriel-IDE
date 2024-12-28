@@ -14,10 +14,11 @@ Currently, Toriel is in its Alpha Stages. Features are limited, and documentatio
 * Tools
     * Image array generator
     * Zen Studio slot sync fix
+* IntelliSense
+    * Code Completion
 
 ## Planned Features
 * IntelliSense
-    * Code Completion
     * Suggestions
     * Error Diagnostics
 * Marketplace Uploading
