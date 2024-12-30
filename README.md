@@ -123,7 +123,7 @@ project to send to Zen Studio. The metadata file (`project.json`) should contain
 ### project.json structure
 ```json
 {
-    project: {
+    "project": {
         "name": "",
         "version": "",
         "source": "",
