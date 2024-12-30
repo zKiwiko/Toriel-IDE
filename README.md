@@ -1,4 +1,5 @@
-# Toriel-IDE
+
+![Toriel-IDE](repo/banner.png)
 
 An IDE for GPC Scripting, written in C++ using the Qt Framework. Toriel aims to enhance the scripting experience for developers with a clean and intuitive interface, focusing on key features like syntax highlighting, project structure management, and more.
 
