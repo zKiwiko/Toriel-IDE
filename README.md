@@ -131,6 +131,19 @@ project to send to Zen Studio. The metadata file (`project.json`) should contain
 }
 ```
 
+### File Inclusions
+Toriel offers the ability to include other files into your main source file.
+This can help with project organizing, aswell as readability within your code. 
+It works by adding the contents of the included file where the inclusion is stated. This emulates how C++ compilers handle this type of preprocessor.
+
+You can include another file with:
+```python
+@include *.gpc # replace * with the name of the file
+```
+If you file is in a relative directory in your project, you can also do
+```python 
+@include subdir/*.gpc # replace * with the name of the file
+```
 
 
 
@@ -139,3 +152,5 @@ project to send to Zen Studio. The metadata file (`project.json`) should contain
 ### Discord Members
 * DLCENERGY
     * for the Image Array Generator
+* YuFow
+    * Bug testing
