@@ -19,16 +19,29 @@ Currently, Toriel is in its Alpha Stages. Features are limited, and documentatio
 
 ## Planned Features
 * IntelliSense
-    * Suggestions
+    * User-Defined Functions and Variables
     * Error Diagnostics
 * Marketplace Uploading
+    * For select Developers
 
-## Syntax Highlighting
-Toriel supports JSON-based themes, allowing you to customize the appearance of the IDE, including the color scheme of the interface and the text editor. Themes are stored in the `bin/data/theme` subdirectory of the project’s installation directory.
+## Syntax Highlighting & Theme
+Toriel has support for JSON based themes, Allowing users to customize the IDE's appearence how ever they please.
+With the Required JSON structure below, you can change the color of specific GPC Keywords in the Editing field,
+or the IDE itself.
 
 
-JSON Structure:
-```json
+### Value Info
+* Colors
+    * Colors in JSON themes must be Hex color codes, for example: `#ff0000` is a bright Red.
+* Font Family
+    * The font-family key defines the font the editor will use. You can choose any font you have installed onto your computer. The default is `Monospace`.
+* Font Style
+    * The font style will depict how the Keyword would look, either being default, **bold**, or *italic*. But not a combination of.
+
+When creating a new theme, its recommended you copy and paste the format below, to avoid any typos. If a font style, family or color is not valid, they will default to `default`, `Monospace` and white (`#FFFFFF`) respectively.
+
+### JSON Structure
+```JSON
 {
     "toriel": {
         "background-color": "",
@@ -83,74 +96,43 @@ JSON Structure:
 }
 ```
 
-### Key notes
-* Color: Specify color values in HEX format (e.g., "#FFFFFF").
-* Font-family: Provide a valid font family name (e.g., "JetBrains Mono").
-* Font-style: Specify a single font style, such as "default", "italic", or "bold". No combinations are allowed.
-
-
 ## True Project Structuring
-Toriel introduces a True Project Structure system that enables better organization of your GPC scripts. This system allows you to include external source files into the main source file declared in a project.json file.
 
-### Project.json Structure
+"True Project Structuring" refers to the ability of organizing your code into multiple different files.
+Toriel supports this idea in a robust way.
 
-The project.json file is essential for defining the main source file of your project. As of version `a0.0.1`, the `name` and `version` keys are placeholders and do not affect the build process, but they will be utilized in future updates.
+**NOTE**: These features cannot be used with Standalone files, they can only be used inside project directories.
+
+### Setting up a project
+To set up a project in this manor; Open a pre-created directory with `Ctrl + Shift + O`.
+Toriel by default will treat any opened directory as a project.
+
+After opening your directory, create a new file titled `project.json`. This will hold the metadata needed for Toriel to be able to set up your
+project to send to Zen Studio. The metadata file (`project.json`) should contain the following structure below.
+
+* name
+    * This should hold the main name of your project.
+    it will be used for a backup in the `bin/data/backups` directory of Toriels installation path.
+* version
+    * This should hold the current version of your project.
+    It will be used for the backup system once more, but will place the backup in a folder with the version number. (e.g: `bin/data/backups/{project_name}/{project_version}`)
+* source
+    * This should hold the main source file of your project. It will be the entry point for Toriel to start its preprocessing before sending the processed code to Zen Studio.
+
+
+### project.json structure
 ```json
 {
-    "project": {
-        "name": "YourProject",
-        "version": "1.0.0",
-        "source": "main.gpc"
+    project: {
+        "name": "",
+        "version": "",
+        "source": "",
     }
 }
 ```
-* **name**: Name of the Project (Future Use)
-* **version**: Version of the project (Future Use)
-* **source**: The main source file that contains the primary logic of your script.
 
-### Including Additional Files
-To include other source files, use the following syntax:
-```js
-@include filename.gpc
 
-you can also use
 
-@include SubDir/filename.gpc
-```
-This approach emulates how C++ compilers compile. By replacing the `@include` directive with the content from the referenced file before sending the combined data to Zen Studio.
-
-### Example
-**Included File** (`example.gpc`)
-```js
-function add(a, b) {
-    return a + b;
-}
-```
-**Main Source File** (`main.gpc`)
-```js
-@include example.gpc
-main {
-    set_val(TRACE_1, add(10, 10));
-}
-```
-After parsing by Toriel, the code sent to Zen Studio would look something like this:
-```js
-function add(a, b) {
-    return a + b;
-}
-
-main {
-    set_val(TRACE_1, add(10, 10));
-}
-```
-This system simplifies managing larger scripts by splitting them into smaller, more maintainable files.
-
-## Tools
-Toriel offers some tools to help aid the development process.
-### Image Array Generator
-This tool will create an Image array usable in your script that will then be copy and paste able so you can include it anywhere in your code.
-### Zen Studio Slot Sync Fix
-This tool will delete the ZenStudio directory in `appdata/Roaming`, which will fix any extremely long Slot Syncing in Zen Studio if swapping tabs dont work.
 
 # Credits
 
