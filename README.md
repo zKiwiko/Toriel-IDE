@@ -9,9 +9,10 @@ Currently, Toriel is in its Alpha Stages. Features are limited, and documentatio
 
 * Syntax Highlighting
     * Toriel provides Syntax Highlighting for GPC Scripts, making it easier to read and write your code.
-* True Project Structuring
+* Project Structuring
     * Allows you to manage your scripts in a structured way by organizing them into a project format.
     * File inclusions
+    * Pre-Processors
 * Tools
     * Image array generator
     * Zen Studio slot sync fix
@@ -33,7 +34,7 @@ or the IDE itself.
 
 ### Value Info
 * Colors
-    * Colors in JSON themes must be Hex color codes, for example: `#ff0000` is a bright Red.
+    * Colors in JSON themes must be Hex color codes, for example: `#FF0000` is a bright Red.
 * Font Family
     * The font-family key defines the font the editor will use. You can choose any font you have installed onto your computer. The default is `Monospace`.
 * Font Style
@@ -97,10 +98,10 @@ When creating a new theme, its recommended you copy and paste the format below, 
 }
 ```
 
-## True Project Structuring
+## Project Structuring
 
 "True Project Structuring" refers to the ability of organizing your code into multiple different files.
-Toriel supports this idea in a robust way.
+Toriel supports this idea in a robust way since Zen Studio lacks that ability.
 
 **NOTE**: These features cannot be used with Standalone files, they can only be used inside project directories.
 
@@ -177,7 +178,21 @@ main {
 The proecessed code will goto Zen Studio's Compiler tab, allowing you
 to see the said code and make any adjustments in Toriel before saving it to its own files. (Files themselves cannot be sent to Zen Studio by themselves unless hosted on a website or server.)
 
+## IntelliSense
+Toriel has IntelliSense features that aid in developer experience. As of now; Toriel's intelliSense only contains the following features.
 
+### Auto-Complete
+Auto-Complete is a mundane term, it doesnt necassarily complete your code for you, but instead gives you the option to complete specific words while youre typing.
+
+This can aid developing by reducing the amount of typos one can make, and also showing how many options following the according text typed.
+
+For example, if you start typing "`XB1`" the dropdown menu will show all Constants in GPC that have that following text.
+
+To select an Auto-Complete option, you can use the Arrow Keys on your keyboard or your mouse to scroll through each option.
+You can then press `Ctrl + Enter` or `Ctrl + Tab` to select the option, it will then complete the text with the option you choose.
+
+### Explorer
+The Explorer in Toriel is a side panel that shows declared functions, variables, and arrays in the order they are declared in the current file. It would allow you to see the Data Type of a variable and the line its declared on. Clicking on a item will have you jump to the line the declaration is at.
 
 # Credits
 
