@@ -145,6 +145,33 @@ If you file is in a relative directory in your project, you can also do
 @include subdir/*.gpc # replace * with the name of the file
 ```
 
+### Example
+**example.gpc**
+```js
+function Add(a, b) {
+    return a + b;
+}
+```
+**main.gpc**
+```js
+@include example.gpc
+
+main {     
+    set_val(TRACE_1, Add(10, 10));
+}
+```
+
+When this code is processed, Zen Studio will recieve:
+```js
+function Add(a, b) {
+return a + b;
+}
+
+main {     
+set_val(TRACE_1, Add(10, 10));
+}
+```
+
 
 
 # Credits
