@@ -140,6 +140,7 @@ You can include another file with:
 ```python
 @include *.gpc # replace * with the name of the file
 ```
+
 If you file is in a relative directory in your project, you can also do
 ```python 
 @include subdir/*.gpc # replace * with the name of the file
@@ -164,13 +165,16 @@ main {
 When this code is processed, Zen Studio will recieve:
 ```js
 function Add(a, b) {
-return a + b;
+    return a + b;
 }
 
 main {     
-set_val(TRACE_1, Add(10, 10));
+    set_val(TRACE_1, Add(10, 10));
 }
 ```
+
+The proecessed code will goto Zen Studio's Compiler tab, allowing you
+to see the said code and make any adjustments in Toriel before saving it to its own files. (Files themselves cannot be sent to Zen Studio by themselves unless hosted on a website or server.)
 
 
 
