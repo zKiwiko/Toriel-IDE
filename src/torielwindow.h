@@ -9,6 +9,7 @@
 #include "zenstudio.h"
 #include "closingpairs.h"
 #include "autocomplete.h"
+#include "explorer.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -68,6 +69,7 @@ private:
     Parser *parse;
     ZenStudio *studio;
     AutoComplete autocomplete;
+    Explorer explorer;
 
     QString StatusBarMsg();
 

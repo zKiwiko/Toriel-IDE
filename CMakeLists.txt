@@ -31,6 +31,7 @@ qt_add_executable(Toriel-IDE
         src/zenstudio.h src/zenstudio.cpp
         src/closingpairs.h src/closingpairs.cpp
         src/autocomplete.h src/autocomplete.cpp
+        src/explorer.h src/explorer.cpp
     )
 else()
     if(ANDROID)

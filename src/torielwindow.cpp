@@ -33,6 +33,7 @@ TorielWindow::TorielWindow(QWidget *parent)
     highlighter = new CodeHighlighter(ui->code_field->document());
 
     AutoClosingPairs::Setup(ui->code_field);
+    explorer.Init(ui->code_field, ui->explorer, highlighter->GPC_Datatypes);
     autocomplete.SetupWords(highlighter->GPC_Keywords, highlighter->GPC_Functions, highlighter->GPC_Datatypes, highlighter->GPC_Constants);
     autocomplete.Setup(ui->code_field);
     autocomplete.Style(highlighter->editorColor, highlighter->lineColor);
@@ -171,9 +172,28 @@ void TorielWindow::highlightCurrentLine()
 
 void TorielWindow::on_BuildAndRun_clicked() {
 
-    if (currentDir.isEmpty() || !QDir(currentDir).exists()) {
-        QMessageBox::critical(this, "Error", "Invalid project directory.");
-        return;
+    if (currentDir.isEmpty()) {
+        if (!currentFile.isEmpty()) {
+            QFile file(currentFile);
+            if (!file.open(QIODevice::ReadOnly)) {
+                QMessageBox::critical(this, "Error", "Selected File could not be read");
+                return;
+            }
+
+            QString data = file.readAll();
+            if (data.isEmpty()) {
+                QMessageBox::critical(this, "Error", "File is empty or could not be read.");
+                return;
+            }
+
+            file.close();
+            studio->SendToStudio(data);
+            tprint(QTime::currentTime().toString("hh:mm:ss") + " | Sent to Zen Studio");
+            return;
+        } else {
+            QMessageBox::critical(this, "Error", "No file or directory selected.");
+            return;
+        }
     }
 
     QString package_location = currentDir + "/project.json";

@@ -10,8 +10,6 @@
 #include <QScrollBar>
 #include <QEvent>
 
-AutoComplete::AutoComplete() {}
-
 QString AutoComplete::getWordUnderCursor(QPlainTextEdit *editor) {
     QTextCursor tc = editor->textCursor();
     tc.select(QTextCursor::WordUnderCursor);
@@ -36,10 +34,10 @@ void AutoComplete::SetupWords(QString kw, QString bif, QString dt, QString c) {
         return {};
     };
 
-    keywords.append(parseWords(kw));
-    builtinFunctions.append(parseWords(bif));
-    dataTypes.append(parseWords(dt));
-    constants.append(parseWords(c));
+    a_keywords.append(parseWords(kw));
+    a_builtinFunctions.append(parseWords(bif));
+    a_dataTypes.append(parseWords(dt));
+    a_constants.append(parseWords(c));
 }
 
 void AutoComplete::Setup(QPlainTextEdit *editor) {
@@ -48,7 +46,7 @@ void AutoComplete::Setup(QPlainTextEdit *editor) {
     completer->setCompletionMode(QCompleter::PopupCompletion);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
 
-    QStringListModel* model = new QStringListModel((keywords, dataTypes, builtinFunctions, constants), completer);
+    QStringListModel* model = new QStringListModel((a_keywords + a_dataTypes + a_builtinFunctions + a_constants), completer);
     completer->setModel(model);
 
     editor->installEventFilter(this);
