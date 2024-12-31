@@ -73,7 +73,8 @@ private:
 
     QString StatusBarMsg();
 
-    void create_backup();
+    bool backup_project(const QString& sPath, const QString& dPath);
+    void backup_processed(const QString& path, const QString& pC);
     void tprint(const QString &what);
     void checkForUpdate();
 

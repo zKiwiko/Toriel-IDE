@@ -41,7 +41,7 @@ TorielWindow::TorielWindow(QWidget *parent)
     setWidgetThemes();
     checkForUpdate();
 
-    tprint(QTime::currentTime().toString("hh:mm:ss") + " | Toriel IDE version: " + toriel_ver);
+    tprint("Toriel IDE version: " + toriel_ver);
     connect(ui->code_field, &QPlainTextEdit::cursorPositionChanged, this, &TorielWindow::highlightCurrentLine);
 
 }
@@ -54,7 +54,8 @@ TorielWindow::~TorielWindow()
 }
 
 void TorielWindow::tprint(const QString &what) {
-    ui->terminal->appendPlainText(what);
+    QString time = QTime::currentTime().toString("hh:mm:ss") + " | ";
+    ui->terminal->appendPlainText(time + what);
 }
 
 void TorielWindow::checkForUpdate() {
@@ -65,7 +66,7 @@ void TorielWindow::checkForUpdate() {
 
     QObject::connect(manager, &QNetworkAccessManager::finished, [this, manager](QNetworkReply *reply) {
     if (reply->error() != QNetworkReply::NoError) {
-        tprint(QTime::currentTime().toString("hh:mm:ss") + " | Failed to check for updates: " + reply->errorString());
+        tprint("Failed to check for updates: " + reply->errorString());
             reply->deleteLater();
         manager->deleteLater();
         return;
@@ -76,7 +77,7 @@ void TorielWindow::checkForUpdate() {
 
         QString latestTag = release.value("tag_name").toString();
         if (latestTag.isEmpty()) {
-            tprint(QTime::currentTime().toString("hh:mm:ss") + " | No release information available.");
+            tprint("No release information available.");
             reply->deleteLater();
             manager->deleteLater();
             return;
@@ -86,9 +87,9 @@ void TorielWindow::checkForUpdate() {
         QVersionNumber latestVer = QVersionNumber::fromString(latestTag);
 
         if (latestVer > currentVer) {
-            tprint(QTime::currentTime().toString("hh:mm:ss") + " | A new version of Toriel is available.\nhttps://github.com/zKiwiko/Toriel-IDE\n");
+            tprint("A new version of Toriel is available.\nhttps://github.com/zKiwiko/Toriel-IDE\n");
         } else {
-            tprint(QTime::currentTime().toString("hh:mm:ss") + " | You're Up-To-Date.");
+            tprint("You're Up-To-Date.");
         }
 
         reply->deleteLater();
@@ -170,6 +171,66 @@ void TorielWindow::highlightCurrentLine()
     ui->code_field->setExtraSelections(extraSelections);
 }
 
+bool TorielWindow::backup_project(const QString& sPath, const QString& dPath) {
+    tprint("Creating Backup...");
+
+    QDir source(sPath);
+    QDir destination(dPath);
+
+    if(!source.exists()) {
+        tprint("Source directory does not exist: " + source);
+        return false;
+    }
+
+    if(!destination.exists()) {
+        if(!destination.mkpath(".")) {
+            tprint("Failed to create backup directory: " + destination);
+            return false;
+        }
+    }
+
+    for(const QFileInfo &fileInfo : source.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries)) {
+        QString sourceFilePath = fileInfo.absoluteFilePath();
+        QString destinationFilePath = destination.filePath(fileInfo.fileName());
+
+        if (fileInfo.isDir()) {
+            if (!backup_project(sourceFilePath, destinationFilePath)) {
+                return false;
+            }
+        } else if (fileInfo.isFile()) {
+            if (!QFile::copy(sourceFilePath, destinationFilePath)) {
+                tprint("Failed to copy file: " + sourceFilePath + " to " + destinationFilePath);
+                return false;
+            }
+        }
+    }
+    tprint("Successfully backed up project.");
+    return true;
+}
+
+void TorielWindow::backup_processed(const QString& path, const QString &pC) {
+    QDir dir(path);
+
+    if (!dir.exists()) {
+        if (!dir.mkpath(".")) {
+            return;
+        }
+    }
+
+    QString fileName = ("p_" + parse->pr_name + ".gpc");
+    QString filePath = dir.filePath(fileName);
+    QFile file(filePath);
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "Failed to create or open file:" << filePath;
+        return;
+    }
+
+    QTextStream out(&file);
+    out << pC;
+    file.close();
+}
+
 void TorielWindow::on_BuildAndRun_clicked() {
 
     if (currentDir.isEmpty()) {
@@ -188,7 +249,7 @@ void TorielWindow::on_BuildAndRun_clicked() {
 
             file.close();
             studio->SendToStudio(data);
-            tprint(QTime::currentTime().toString("hh:mm:ss") + " | Sent to Zen Studio");
+            tprint("Sent to Zen Studio");
             return;
         } else {
             QMessageBox::critical(this, "Error", "No file or directory selected.");
@@ -202,8 +263,10 @@ void TorielWindow::on_BuildAndRun_clicked() {
         return;
     }
 
+    QString backupDir = ("bin/backups/" + parse->pr_name + "/" + parse->pr_ver);
+
     try {
-        tprint(QTime::currentTime().toString("hh:mm:ss") + " | Parsing Main source file...");
+        tprint("Parsing Main source file...");
         parse->parse_File(package_location);
     } catch (const std::exception& ex) {
         QMessageBox::critical(this, "Error", QString("Exception in parse_File: %1").arg(ex.what()));
@@ -221,15 +284,17 @@ void TorielWindow::on_BuildAndRun_clicked() {
     QStringList processedFiles;
 
     try {
-        tprint(QTime::currentTime().toString("hh:mm:ss") + " | Processing Main source file and inclusions...");
+        tprint("Processing Main source file and inclusions...");
         QString processedCode = parse->processMain(main_location, processedFiles);
         if (processedCode.isEmpty()) {
             QMessageBox::critical(this, "Error", "Processed code is empty.");
             return;
         }
-        tprint(QTime::currentTime().toString("hh:mm:ss") + " | Sending to Zen Studio");
+        tprint("Sending to Zen Studio");
         studio->SendToStudio(processedCode);
-        tprint(QTime::currentTime().toString("hh:mm:ss") + " | Sent to Zen Studio");
+        tprint("Sent to Zen Studio");
+        backup_project(currentDir, backupDir);
+        backup_processed(backupDir, processedCode);
     } catch (const std::exception& ex) {
         QMessageBox::critical(this, "Error", QString("Exception: %1").arg(ex.what()));
         return;
@@ -283,6 +348,8 @@ void TorielWindow::on_actionOpen_File_Ctrl_O_triggered()
     if(file.isEmpty()) {
         return;
     }
+
+    tprint(QTime::currentTime().toString("hh:mm:ss") + " | Opening file, This may take a while depending on the size of the file...");
 
     currentFile = file;
 
@@ -414,8 +481,8 @@ void TorielWindow::on_actionImage_Generator_triggered()
         return;
     }
 
-    int width = std::clamp(img.width(), 0, 127);
-    int height = std::clamp(img.height(), 0, 63);
+    int width = std::clamp(img.width(), 0, 128);
+    int height = std::clamp(img.height(), 0, 64);
 
     int arraySize = std::ceil(double(width * height) / 8);
     std::vector<int> ints(arraySize, 0);
@@ -441,6 +508,7 @@ void TorielWindow::on_actionImage_Generator_triggered()
 
     clipboard->setText(clipboardText);
     tprint(QTime::currentTime().toString("hh:mm:ss") + " | Generated Image copied to clipboard.");
+    tprint(QTime::currentTime().toString("hh:mm:ss") + " | Generated Image backed up to `bin/data/generated/images`");
 
     QDir dir;
     if (!dir.exists("bin/data/generated/images")) {
