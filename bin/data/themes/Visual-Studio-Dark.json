@@ -7,30 +7,30 @@
     },
     "editor": {
         "font-family": "JetBrains Mono",
-        "text-color": "#e1e1e6",
-        "background-color": "#130d17",
-        "line-highlight-color": "#18141e"
+        "text-color": "#d4d4d4",
+        "background-color": "#1e1e1e",
+        "line-highlight-color": "#1f1f1f"
     },
     "explorer": {
         "background-color": "#130d17",
         "font-family": "JetBrains Mono"
     },
     "numbers": {
-        "color": "#ff5370",
+        "color": "#b5cea8",
         "font-style": "default"
     },
     "keywords": {
-        "color": "#b589d6",
+        "color": "#569cd6",
         "font-style": "default"
     },
     "strings": {
-        "color": "#f78c6c",
+        "color": "#ce9178",
         "font-style": "default"
     },
     "functions": {
-        "built-in-color": "#82aaff",
+        "built-in-color": "#dcdcaa",
         "built-in-font-style": "default",
-        "user-defined-color": "#82aaff",
+        "user-defined-color": "#dcdcaa",
         "user-defined-font-style": "default"
     },
     "boolean": {
@@ -38,15 +38,15 @@
         "font-style": "default"
     },
     "data-types": {
-        "color": "#89ddff",
+        "color": "#4ec9b0",
         "font-style": "default"
     },
     "constants": {
-        "color": "#f07178",
+        "color": "#b5cea8",
         "font-style": "default"
     },
     "comments": {
-        "color": "#70697a",
+        "color": "#6a9955",
         "font-style": "default"
     }
 }

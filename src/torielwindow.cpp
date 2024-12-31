@@ -535,5 +535,6 @@ void TorielWindow::on_actionChoose_Theme_triggered()
 void TorielWindow::on_actionReload_Theme_triggered()
 {
     highlighter->RetrieveThemeData();
+    highlighter->SetSyntaxFormat();
     setWidgetThemes();
 }

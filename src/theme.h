@@ -12,6 +12,7 @@ public:
     explicit CodeHighlighter(QTextDocument *parent = nullptr);
     void ReloadThemeData();
     void RetrieveThemeData();
+    void SetSyntaxFormat();
 
     QString GPC_Constants;
     QString GPC_Functions;
@@ -72,7 +73,6 @@ private:
     QString commentsFont;
 
     void RetrieveGPCData();
-    void SetSyntaxFormat();
 
     void highlightKeywords(const QString &text);
     void highlightNumbers(const QString &text);
