@@ -34,7 +34,7 @@ void Parser::parse_File(const QString &path) {
         QJsonObject projectObj = obj["project"].toObject();
 
         if (projectObj.contains("name") && projectObj["name"].isString()) {
-            pr_src = projectObj["name"].toString();
+            pr_name = projectObj["name"].toString();
         }
 
         if (projectObj.contains("version") && projectObj["version"].isString()) {

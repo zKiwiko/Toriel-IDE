@@ -19,8 +19,6 @@ bool ZenStudio::EnumerateProcess(const std::wstring &processName, std::vector<HW
 
         wchar_t windowTitle[256];
         GetWindowTextW(hwnd, windowTitle, 256);
-        qDebug() << "Found window:" << QString::fromWCharArray(windowTitle)
-                 << "Process ID:" << processId;
 
         HANDLE processHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processId);
         if (processHandle) {
@@ -48,7 +46,6 @@ void ZenStudio::SendGPCMessage(RemoteCMD cmd, const QString &message) {
 
         std::vector<HWND> hwndList;
         if (EnumerateProcess(L"ZenStudio.exe", hwndList)) {
-            qDebug() << "Found" << hwndList.size() << "ZenStudio windows";
 
             QByteArray messageBytes = message.toUtf8();
             COPYDATASTRUCT cds;
@@ -58,7 +55,6 @@ void ZenStudio::SendGPCMessage(RemoteCMD cmd, const QString &message) {
 
             for (auto hwnd : hwndList) {
                 if (hwnd != nullptr) {
-                    qDebug() << "Sending message to HWND:" << hwnd;
                     SendMessage(hwnd, WM_COPYDATA, 0, reinterpret_cast<LPARAM>(&cds));
                 }
             }

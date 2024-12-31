@@ -171,66 +171,6 @@ void TorielWindow::highlightCurrentLine()
     ui->code_field->setExtraSelections(extraSelections);
 }
 
-bool TorielWindow::backup_project(const QString& sPath, const QString& dPath) {
-    tprint("Creating Backup...");
-
-    QDir source(sPath);
-    QDir destination(dPath);
-
-    if(!source.exists()) {
-        tprint("Source directory does not exist: " + source);
-        return false;
-    }
-
-    if(!destination.exists()) {
-        if(!destination.mkpath(".")) {
-            tprint("Failed to create backup directory: " + destination);
-            return false;
-        }
-    }
-
-    for(const QFileInfo &fileInfo : source.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries)) {
-        QString sourceFilePath = fileInfo.absoluteFilePath();
-        QString destinationFilePath = destination.filePath(fileInfo.fileName());
-
-        if (fileInfo.isDir()) {
-            if (!backup_project(sourceFilePath, destinationFilePath)) {
-                return false;
-            }
-        } else if (fileInfo.isFile()) {
-            if (!QFile::copy(sourceFilePath, destinationFilePath)) {
-                tprint("Failed to copy file: " + sourceFilePath + " to " + destinationFilePath);
-                return false;
-            }
-        }
-    }
-    tprint("Successfully backed up project.");
-    return true;
-}
-
-void TorielWindow::backup_processed(const QString& path, const QString &pC) {
-    QDir dir(path);
-
-    if (!dir.exists()) {
-        if (!dir.mkpath(".")) {
-            return;
-        }
-    }
-
-    QString fileName = ("p_" + parse->pr_name + ".gpc");
-    QString filePath = dir.filePath(fileName);
-    QFile file(filePath);
-
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qDebug() << "Failed to create or open file:" << filePath;
-        return;
-    }
-
-    QTextStream out(&file);
-    out << pC;
-    file.close();
-}
-
 void TorielWindow::on_BuildAndRun_clicked() {
 
     if (currentDir.isEmpty()) {
@@ -263,8 +203,6 @@ void TorielWindow::on_BuildAndRun_clicked() {
         return;
     }
 
-    QString backupDir = ("bin/backups/" + parse->pr_name + "/" + parse->pr_ver);
-
     try {
         tprint("Parsing Main source file...");
         parse->parse_File(package_location);
@@ -282,6 +220,7 @@ void TorielWindow::on_BuildAndRun_clicked() {
         return;
     }
     QStringList processedFiles;
+    QString backupDir = ("bin/backups/" + parse->pr_name + "/" + parse->pr_ver);
 
     try {
         tprint("Processing Main source file and inclusions...");
@@ -302,6 +241,66 @@ void TorielWindow::on_BuildAndRun_clicked() {
         QMessageBox::critical(this, "Error", "Unknown exception occurred.");
         return;
     }
+}
+
+bool TorielWindow::backup_project(const QString& sPath, const QString& dPath) {
+    tprint("Creating Backup...");
+
+    QDir source(sPath);
+    QDir destination(dPath);
+
+    if(!source.exists()) {
+        tprint("Source directory does not exist: " + sPath);
+        return false;
+    }
+
+    if(!destination.exists()) {
+        if(!destination.mkpath(".")) {
+            tprint("Failed to create backup directory: " + dPath);
+            return false;
+        }
+    }
+
+    for(const QFileInfo &fileInfo : source.entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries)) {
+        QString sourceFilePath = fileInfo.absoluteFilePath();
+        QString destinationFilePath = destination.filePath(fileInfo.fileName());
+
+        if (fileInfo.isDir()) {
+            if (!backup_project(sourceFilePath, destinationFilePath)) {
+                return false;
+            }
+        } else if (fileInfo.isFile()) {
+            if (!QFile::copy(sourceFilePath, destinationFilePath)) {
+                tprint("Failed to copy file: " + sourceFilePath + " to " + destinationFilePath);
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+void TorielWindow::backup_processed(const QString& path, const QString &pC) {
+    QDir dir(path);
+
+    if (!dir.exists()) {
+        if (!dir.mkpath(".")) {
+            return;
+        }
+    }
+
+    QString fileName = ("p_" + parse->pr_name + ".gpc");
+    qDebug() << fileName;
+    QString filePath = dir.filePath(fileName);
+    QFile file(filePath);
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "Failed to create or open file:" << filePath;
+        return;
+    }
+
+    QTextStream out(&file);
+    out << pC;
+    file.close();
 }
 
 QColor TorielWindow::adjustGlow(const QColor &color, int adjustment) {
@@ -338,7 +337,7 @@ void TorielWindow::on_actionOpen_Folder_triggered()
     QString directory = QFileDialog::getExistingDirectory(nullptr, "Select Folder", QDir::homePath(), QFileDialog::ShowDirsOnly);
     currentDir = directory;
     setTreeView();
-    tprint(QTime::currentTime().toString("hh:mm:ss") + " | Opened folder: " + currentDir);
+    tprint("Opened folder: " + currentDir);
 }
 
 void TorielWindow::on_actionOpen_File_Ctrl_O_triggered()
@@ -349,7 +348,7 @@ void TorielWindow::on_actionOpen_File_Ctrl_O_triggered()
         return;
     }
 
-    tprint(QTime::currentTime().toString("hh:mm:ss") + " | Opening file, This may take a while depending on the size of the file...");
+    tprint("Opening file, This may take a while depending on the size of the file...");
 
     currentFile = file;
 
@@ -374,7 +373,7 @@ void TorielWindow::on_actionOpen_File_Ctrl_O_triggered()
     f.close();
 
     ui->code_field->setPlainText(QString::fromUtf8(data));
-    tprint(QTime::currentTime().toString("hh:mm:ss") + " | Opened file: " + currentFileName);
+    tprint("Opened file: " + currentFileName);
 }
 
 void TorielWindow::on_actionSave_File_Ctrl_S_triggered()
@@ -402,19 +401,19 @@ void TorielWindow::on_actionSave_File_Ctrl_S_triggered()
     QTextStream out(&f);
     out << saveWhat;
     f.close();
-    tprint(QTime::currentTime().toString("hh:mm:ss") + " | Saved file: " + currentFileName);
+    tprint("Saved file: " + currentFileName);
 }
 
 void TorielWindow::on_actionClose_File_triggered()
 {
-    tprint(QTime::currentTime().toString("hh:mm:ss") + " | Closed file: " + currentFile);
+    tprint("Closed file: " + currentFile);
     currentFile.clear();
     ui->code_field->clear();
 }
 
 void TorielWindow::on_actionClose_Project_triggered()
 {
-    tprint(QTime::currentTime().toString("hh:mm:ss") + " | Closed project: " + currentDir);
+    tprint("Closed project: " + currentDir);
     currentDir.clear();
     currentFile.clear();
     ui->code_field->clear();
@@ -437,7 +436,7 @@ void TorielWindow::on_actionRepository_triggered()
 void TorielWindow::on_directory_view_doubleClicked(const QModelIndex &index)
 {
     if(!index.isValid()) {
-        tprint(QTime::currentTime().toString("hh:mm:ss") + " | Tree Err: Invalid Index");
+        tprint("Tree Err: Invalid Index");
         return;
     }
 
@@ -448,7 +447,7 @@ void TorielWindow::on_directory_view_doubleClicked(const QModelIndex &index)
     QString filePath = model->filePath(index);
     QFileInfo fileInfo(filePath);
     if (!fileInfo.isFile()) {
-        tprint(QTime::currentTime().toString("hh:mm:ss") + " | Error: Selected item is not a file");
+        tprint("Error: Selected item is not a file");
         return;
     }
 
@@ -507,8 +506,8 @@ void TorielWindow::on_actionImage_Generator_triggered()
     QClipboard *clipboard = QGuiApplication::clipboard();
 
     clipboard->setText(clipboardText);
-    tprint(QTime::currentTime().toString("hh:mm:ss") + " | Generated Image copied to clipboard.");
-    tprint(QTime::currentTime().toString("hh:mm:ss") + " | Generated Image backed up to `bin/data/generated/images`");
+    tprint("Generated Image copied to clipboard.");
+    tprint("Generated Image backed up to `bin/data/generated/images`");
 
     QDir dir;
     if (!dir.exists("bin/data/generated/images")) {
