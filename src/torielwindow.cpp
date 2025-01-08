@@ -31,11 +31,12 @@ TorielWindow::TorielWindow(QWidget *parent)
     parse = new Parser();
     studio = new ZenStudio();
     highlighter = new CodeHighlighter(ui->code_field->document());
-
     AutoClosingPairs::Setup(ui->code_field);
+
     explorer.Init(ui->code_field, ui->explorer, highlighter->GPC_Datatypes);
+
     autocomplete.SetupWords(highlighter->GPC_Keywords, highlighter->GPC_Functions, highlighter->GPC_Datatypes, highlighter->GPC_Constants);
-    autocomplete.Setup(ui->code_field);
+    autocomplete.Init(ui->code_field);
     autocomplete.Style(highlighter->editorColor, highlighter->lineColor);
 
     setWidgetThemes();
@@ -342,13 +343,12 @@ void TorielWindow::on_actionOpen_Folder_triggered()
 
 void TorielWindow::on_actionOpen_File_Ctrl_O_triggered()
 {
+    tprint("Opening file, This may take a while depending on the size of the file...");
     QString file = QFileDialog::getOpenFileName(nullptr, "Open GPC File", QDir::homePath(), "GPC Files (*.gpc);;All Files(*)");
 
     if(file.isEmpty()) {
         return;
     }
-
-    tprint("Opening file, This may take a while depending on the size of the file...");
 
     currentFile = file;
 

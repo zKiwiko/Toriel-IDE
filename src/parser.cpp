@@ -5,7 +5,6 @@
 #include <QDir>
 #include <QException>
 #include <QMessageBox>
-
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QByteArray>

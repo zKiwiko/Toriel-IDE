@@ -17,7 +17,7 @@ CodeHighlighter::CodeHighlighter(QTextDocument *parent) : QSyntaxHighlighter(par
 }
 
 void CodeHighlighter::highlightBlock(const QString &text) {
-    if(text.isEmpty() || text == " ") {
+    if(text.isEmpty() || text == '\r' || text == '\t' || text == '\n') {
         return;
     }
     highlightFunctionNames(text);
@@ -267,9 +267,9 @@ void CodeHighlighter::RetrieveGPCData() {
         }
     }
 
-    GPC_Constants = ("\\b(" + constants.join("|") + ")\\b");
-    GPC_Functions = ("\\b(" + functions.join("|") + ")\\b");
     GPC_Keywords = ("\\b(" + keywords.join("|") + ")\\b");
+    GPC_Functions = ("\\b(" + functions.join("|") + ")\\b");
+    GPC_Constants = ("\\b(" + constants.join("|") + ")\\b");
     GPC_Datatypes = ("\\b(" + datatypes.join("|") + ")\\b");
 }
 
@@ -296,7 +296,6 @@ void CodeHighlighter::RetrieveThemeData() {
     QJsonObject settingsObj = settingsDoc.object();
 
     themePath = ("bin/data/themes/" + (settingsObj.contains("theme") && !settingsObj.value("theme").toString().isEmpty() ? settingsObj.value("theme").toString() : ""));
-    qDebug() << themePath;
 
     QFile themeFile(themePath);
     if(!themeFile.open(QIODevice::ReadOnly)) {
@@ -338,8 +337,6 @@ void CodeHighlighter::RetrieveThemeData() {
     // Font Families
     editorFont = themeObj.contains("editor") ? themeObj["editor"].toObject()["font-family"].toString() : "Monospace";
     explorerFont = themeObj.contains("explorer") ? themeObj["explorer"].toObject()["font-family"].toString() : "Monospace";
-
-    qDebug() << editorColor << " : " << editorFont;
 
     // Font styles, Italic bold etc
     numbersFont = themeObj.contains("numbers") ? themeObj["numbers"].toObject()["font-style"].toString() : "default";

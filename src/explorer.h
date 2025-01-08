@@ -55,10 +55,12 @@ public:
             QRegularExpression::MultilineOption
             );
 
-        patterns["enum"] = QRegularExpression(
-            R"(enum\s+(\w+)\s*\{[^\}]*\})",
+        patterns["combo"] = QRegularExpression(
+            R"(^\s*combo\s+(\w+)\s*\{)",
             QRegularExpression::MultilineOption
             );
+
+
     }
 
     QList<CodeElement> parseCodeElements(const QString& text) {
@@ -128,8 +130,8 @@ public:
                         element.type = "Func";
                         element.name = match.captured(1);
                     }
-                    else if (it.key() == "enum") {
-                        element.type = "Enum";
+                    else if (it.key() == "combo") {
+                        element.type = "Combo";
                         element.name = match.captured(1);
                     }
 
