@@ -18,10 +18,10 @@ Currently, Toriel is in its Alpha Stages. Features are limited, and documentatio
     * Zen Studio slot sync fix
 * IntelliSense
     * Code Completion
+    * User-Defined Functions, Combos, Arrays, and Variables
 
 ## Planned Features
 * IntelliSense
-    * User-Defined Functions and Variables
     * Error Diagnostics
 * Marketplace Uploading
     * For select Developers
@@ -190,6 +190,12 @@ For example, if you start typing "`XB1`" the dropdown menu will show all Constan
 
 To select an Auto-Complete option, you can use the Arrow Keys on your keyboard or your mouse to scroll through each option.
 You can then press `Ctrl + Enter` or `Ctrl + Tab` to select the option, it will then complete the text with the option you choose.
+
+### Icons
+* ![func](bin/assets/intelliSense/functions.svg) | Used for Functions and Combos
+* ![vars](bin/assets/intelliSense/variables.svg) | Used for Variables and Arrays
+* ![keyw](bin/assets/intelliSense/keywords.svg)  | Used for keywords
+* ![const](bin/assets/intelliSense/constants.svg) | Used for gpc constants
 
 ### Explorer
 The Explorer in Toriel is a side panel that shows declared functions, variables, and arrays in the order they are declared in the current file. It would allow you to see the Data Type of a variable and the line its declared on. Clicking on a item will have you jump to the line the declaration is at.
