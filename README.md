@@ -142,7 +142,7 @@ add variables to the stack, and decrease the change of using the max variable li
 The GPC compiler already does this when using the `define` keyword but can result in slower compile times if abused. The const macro helps avoid this.
 
 You can use the const macro like:
-```js
+```oy
 @const Variable 10
 
 main {
