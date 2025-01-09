@@ -133,6 +133,29 @@ project to send to Zen Studio. The metadata file (`project.json`) should contain
 }
 ```
 
+## Pre-Processors & Macros
+These pre-processors are Toriel exlusive. Since theyre not including in GPC they are added to give developers a more native comfortable feeling.
+
+### Const 
+The const macro will go through the code and process the const identifier with the value that is assigned to it, allowing the GPC compiler to avoid needing to
+add variables to the stack, and decrease the change of using the max variable limit.
+The GPC compiler already does this when using the `define` keyword but can result in slower compile times if abused. The const macro helps avoid this.
+
+You can use the const macro like:
+```js
+@const Variable 10
+
+main {
+   if(get_val(XB1_A)) set_val(TRACE_1, Variable);
+}
+```
+The processed code would turn it into this:
+```js
+main {
+   if(get_val(XB1_A)) set_val(TRACE_1, 10);
+}
+```
+
 ### File Inclusions
 Toriel offers the ability to include other files into your main source file.
 This can help with project organizing, aswell as readability within your code. 
