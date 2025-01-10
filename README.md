@@ -18,10 +18,10 @@ Currently, Toriel is in its Alpha Stages. Features are limited, and documentatio
     * Zen Studio slot sync fix
 * IntelliSense
     * Code Completion
+    * User-Defined Functions, Combos, Arrays, and Variables
 
 ## Planned Features
 * IntelliSense
-    * User-Defined Functions and Variables
     * Error Diagnostics
 * Marketplace Uploading
     * For select Developers
@@ -133,6 +133,32 @@ project to send to Zen Studio. The metadata file (`project.json`) should contain
 }
 ```
 
+## Pre-Processors & Macros
+These pre-processors are Toriel exlusive. Since theyre not including in GPC they are added to give developers a more native comfortable feeling.
+
+### Const 
+The const macro will go through the code and process the const identifier with the value that is assigned to it, allowing the GPC compiler to avoid needing to
+add variables to the stack, and decrease the change of using the max variable limit.
+The GPC compiler already does this when using the `define` keyword but can result in slower compile times if abused. The const macro helps avoid this.
+
+You can use the const macro like:
+```python
+@const Variable 10
+or
+@const Variable = 10
+
+main {
+   if(get_val(XB1_A)) set_val(TRACE_1, Variable);
+}
+```
+The processed code would turn it into this:
+```js
+main {
+   if(get_val(XB1_A)) set_val(TRACE_1, 10);
+}
+```
+Semicolons are optional at the end of the definition.
+
 ### File Inclusions
 Toriel offers the ability to include other files into your main source file.
 This can help with project organizing, aswell as readability within your code. 
@@ -190,6 +216,12 @@ For example, if you start typing "`XB1`" the dropdown menu will show all Constan
 
 To select an Auto-Complete option, you can use the Arrow Keys on your keyboard or your mouse to scroll through each option.
 You can then press `Ctrl + Enter` or `Ctrl + Tab` to select the option, it will then complete the text with the option you choose.
+
+### Icons
+* ![func](bin/assets/intelliSense/functions.svg) | Used for Functions and Combos
+* ![vars](bin/assets/intelliSense/variables.svg) | Used for Variables and Arrays
+* ![keyw](bin/assets/intelliSense/keywords.svg)  | Used for keywords
+* ![const](bin/assets/intelliSense/constants.svg) | Used for gpc constants
 
 ### Explorer
 The Explorer in Toriel is a side panel that shows declared functions, variables, and arrays in the order they are declared in the current file. It would allow you to see the Data Type of a variable and the line its declared on. Clicking on a item will have you jump to the line the declaration is at.
