@@ -144,6 +144,8 @@ The GPC compiler already does this when using the `define` keyword but can resul
 You can use the const macro like:
 ```python
 @const Variable 10
+or
+@const Variable = 10
 
 main {
    if(get_val(XB1_A)) set_val(TRACE_1, Variable);
@@ -155,6 +157,7 @@ main {
    if(get_val(XB1_A)) set_val(TRACE_1, 10);
 }
 ```
+Semicolons are optional at the end of the definition.
 
 ### File Inclusions
 Toriel offers the ability to include other files into your main source file.
