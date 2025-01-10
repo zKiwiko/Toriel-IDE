@@ -11,7 +11,7 @@
 
 Parser::Parser() {
     QString appPath = QCoreApplication::applicationDirPath();
-    systemIncludePath = QDir(appPath).filePath("bin/data/gpc");
+    systemIncludePath = QDir(appPath).filePath("bin/data/gpc/libs");
 }
 
 const QRegularExpression Parser::include_pattern_system(R"(@include\s*<([^>]+)>)");

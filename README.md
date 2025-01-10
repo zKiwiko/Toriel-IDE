@@ -15,7 +15,6 @@ Currently, Toriel is in its Alpha Stages. Features are limited, and documentatio
     * Pre-Processors
 * Tools
     * Image array generator
-    * Zen Studio slot sync fix
 * IntelliSense
     * Code Completion
     * User-Defined Functions, Combos, Arrays, and Variables
@@ -143,9 +142,7 @@ The GPC compiler already does this when using the `define` keyword but can resul
 
 You can use the const macro like:
 ```python
-@const Variable 10
-or
-@const Variable = 10
+@const Variable = 10;
 
 main {
    if(get_val(XB1_A)) set_val(TRACE_1, Variable);
@@ -164,45 +161,18 @@ Toriel offers the ability to include other files into your main source file.
 This can help with project organizing, aswell as readability within your code. 
 It works by adding the contents of the included file where the inclusion is stated. This emulates how C++ compilers handle this type of preprocessor.
 
-You can include another file with:
+You can include another file thats within your projects directory with:
 ```python
-@include *.gpc # replace * with the name of the file
+@include "file.gpc"
 ```
+This will copy the content of the file to where the inclusion takes place.
 
-If you file is in a relative directory in your project, you can also do
-```python 
-@include subdir/*.gpc # replace * with the name of the file
+You can include files from the [Standard Library](#std) with the example below,
+This will also copy the content of said file to where the inclusion is before Toriel sends it 
+to ZenStudio.
+```python
+@include <std/(dir|file)>
 ```
-
-### Example
-**example.gpc**
-```js
-function Add(a, b) {
-    return a + b;
-}
-```
-**main.gpc**
-```js
-@include example.gpc
-
-main {     
-    set_val(TRACE_1, Add(10, 10));
-}
-```
-
-When this code is processed, Zen Studio will recieve:
-```js
-function Add(a, b) {
-    return a + b;
-}
-
-main {     
-    set_val(TRACE_1, Add(10, 10));
-}
-```
-
-The proecessed code will goto Zen Studio's Compiler tab, allowing you
-to see the said code and make any adjustments in Toriel before saving it to its own files. (Files themselves cannot be sent to Zen Studio by themselves unless hosted on a website or server.)
 
 ## IntelliSense
 Toriel has IntelliSense features that aid in developer experience. As of now; Toriel's intelliSense only contains the following features.
@@ -233,3 +203,4 @@ The Explorer in Toriel is a side panel that shows declared functions, variables,
     * for the Image Array Generator
 * YuFow
     * Bug testing
+    * std library contributions
