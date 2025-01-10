@@ -28,9 +28,9 @@ TorielWindow::TorielWindow(QWidget *parent)
     , ui(new Ui::TorielWindow)
 {
     ui->setupUi(this);
-    parse = new Parser();
     studio = new ZenStudio();
     highlighter = new CodeHighlighter(ui->code_field->document());
+    parse = new Parser();
     AutoClosingPairs::Setup(ui->code_field);
 
     explorer.Init(ui->code_field, ui->explorer, highlighter->GPC_Datatypes);
@@ -84,11 +84,11 @@ void TorielWindow::checkForUpdate() {
             return;
         }
 
-        QVersionNumber currentVer = QVersionNumber::fromString(this->toriel_ver);
+        QVersionNumber currentVer = QVersionNumber::fromString(toriel_ver);
         QVersionNumber latestVer = QVersionNumber::fromString(latestTag);
 
         if (latestVer > currentVer) {
-            tprint("A new version of Toriel is available.\nhttps://github.com/zKiwiko/Toriel-IDE\n");
+            tprint("A new version of Toriel is available at https://github.com/zKiwiko/Toriel-IDE");
         } else {
             tprint("You're Up-To-Date.");
         }
@@ -345,7 +345,6 @@ void TorielWindow::on_actionOpen_File_Ctrl_O_triggered()
 {
     tprint("Opening file, This may take a while depending on the size of the file...");
     QString file = QFileDialog::getOpenFileName(nullptr, "Open GPC File", QDir::homePath(), "GPC Files (*.gpc);;All Files(*)");
-
     if(file.isEmpty()) {
         return;
     }
@@ -444,6 +443,23 @@ void TorielWindow::on_directory_view_doubleClicked(const QModelIndex &index)
     if(!model) {
         return;
     }
+
+    if(!currentFile.isEmpty()) {
+        QFile f(currentFile);
+        if (!f.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            QMessageBox::critical(nullptr, "Error", "Could not save file: " + currentFile);
+            return;
+        }
+
+        QString saveWhat = ui->code_field->toPlainText();
+        QTextStream out(&f);
+        out << saveWhat;
+        f.close();
+        tprint("Saved file: " + currentFileName);
+    }
+
+
+
     QString filePath = model->filePath(index);
     QFileInfo fileInfo(filePath);
     if (!fileInfo.isFile()) {
@@ -480,8 +496,8 @@ void TorielWindow::on_actionImage_Generator_triggered()
         return;
     }
 
-    int width = std::clamp(img.width(), 0, 128);
-    int height = std::clamp(img.height(), 0, 64);
+    int width = img.width();
+    int height = img.height();
 
     int arraySize = std::ceil(double(width * height) / 8);
     std::vector<int> ints(arraySize, 0);

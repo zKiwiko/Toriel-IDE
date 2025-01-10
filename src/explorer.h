@@ -40,6 +40,11 @@ public:
             QRegularExpression::MultilineOption
             );
 
+        patterns["toriel-cvar"] = QRegularExpression(
+            R"((?:@const)\s+(\w+)(?:\s*=\s*([\w\.]+))?;)",
+            QRegularExpression::MultilineOption
+            );
+
         patterns["array_1d"] = QRegularExpression(
             "^\\s*(?:const\\s+)?" + typePattern + R"(\s+(\w+)\s*\[\s*\w*\s*\]\s*(?:=\s*\{([^\}]*)\})?;)",
             QRegularExpression::MultilineOption
@@ -132,6 +137,10 @@ public:
                     }
                     else if (it.key() == "combo") {
                         element.type = "Combo";
+                        element.name = match.captured(1);
+                    } else if(it.key() == "toriel-cvar") {
+                        element.type = "CVar";
+                        element.isConst = true;
                         element.name = match.captured(1);
                     }
 

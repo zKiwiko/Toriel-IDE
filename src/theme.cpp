@@ -487,7 +487,14 @@ void CodeHighlighter::highlightStrings(const QString &text) {
 
     while (matchIterator.hasNext()) {
         QRegularExpressionMatch match = matchIterator.next();
-        setFormat(match.capturedStart(), match.capturedLength(), stringsFormat);
+
+        if (match.hasMatch()) {
+            if (match.captured(1).isEmpty()) {
+                setFormat(match.capturedStart(0), match.capturedLength(0), stringsFormat);
+            } else {
+                setFormat(match.capturedStart(1), match.capturedLength(1), stringsFormat);
+            }
+        }
     }
 }
 

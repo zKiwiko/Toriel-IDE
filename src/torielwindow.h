@@ -62,7 +62,7 @@ private:
     QString currentDir;
     QString currentFile;
     QString currentFileName;
-    QString toriel_ver = "a0.0.2";
+    QString toriel_ver = "0.0.2";
 
     Ui::TorielWindow *ui;
     CodeHighlighter *highlighter;

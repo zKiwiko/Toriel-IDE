@@ -5,11 +5,9 @@
 #include <QPlainTextEdit>
 #include <QCompleter>
 #include <QObject>
-#include <QRegularExpression>
 #include <QList>
 #include <QRegularExpression>
 #include <QStandardItemModel>
-#include <QIcon>
 
 class AutoComplete : public QObject {
     Q_OBJECT

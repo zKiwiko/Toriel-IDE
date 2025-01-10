@@ -2,12 +2,11 @@
 
 #include <QAbstractItemView>
 #include <QRegularExpression>
+#include <QRegularExpressionMatch>
 #include <QTextCursor>
 #include <QRect>
 #include <QScrollBar>
-#include <QEvent>
-#include <QElapsedTimer>
-#include <QRegularExpressionMatch>
+#include <QIcon>
 
 QString AutoComplete::getWordUnderCursor(QPlainTextEdit *editor) {
     QTextCursor tc = editor->textCursor();
@@ -79,7 +78,7 @@ void AutoComplete::SetupWords(QString kw, QString bif, QString dt, QString c) {
     };
 
     patterns.append(QRegularExpression(
-        R"(\b)" + dt + R"(\s+(\w+)\s*(?:=\s*[^;]+)?;)",
+        dt + R"(\s+(\w+)\s*(?:=\s*[^;]+)?;)",
         QRegularExpression::MultilineOption
         ));
 
@@ -105,6 +104,11 @@ void AutoComplete::SetupWords(QString kw, QString bif, QString dt, QString c) {
 
     patterns.append(QRegularExpression(
         R"(\bcombo\s+(\w+)\s*\{)",
+        QRegularExpression::MultilineOption
+        ));
+
+    patterns.append(QRegularExpression(
+        R"((?:@const)\s+(\w+)(?:\s*=\s*([\w\.]+))?;)",
         QRegularExpression::MultilineOption
         ));
 
