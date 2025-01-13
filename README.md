@@ -154,7 +154,6 @@ main {
    if(get_val(XB1_A)) set_val(TRACE_1, 10);
 }
 ```
-Semicolons are optional at the end of the definition.
 
 ### File Inclusions
 Toriel offers the ability to include other files into your main source file.

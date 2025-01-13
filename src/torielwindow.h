@@ -5,7 +5,7 @@
 #include <QFileDialog>
 
 #include "theme.h"
-#include "parser.h"
+#include "processor.h"
 #include "zenstudio.h"
 #include "closingpairs.h"
 #include "autocomplete.h"
@@ -66,7 +66,7 @@ private:
 
     Ui::TorielWindow *ui;
     CodeHighlighter *highlighter;
-    Parser *parse;
+    Processor *processor;
     ZenStudio *studio;
     AutoComplete autocomplete;
     Explorer explorer;

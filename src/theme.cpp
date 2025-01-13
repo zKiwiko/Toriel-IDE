@@ -4,7 +4,6 @@
 #include <QColor>
 #include <QFile>
 #include <QByteArray>
-
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -14,21 +13,43 @@ CodeHighlighter::CodeHighlighter(QTextDocument *parent) : QSyntaxHighlighter(par
     RetrieveGPCData();
     RetrieveThemeData();
     SetSyntaxFormat();
+    initializeHighlightRules();
 }
 
 void CodeHighlighter::highlightBlock(const QString &text) {
-    if(text.isEmpty() || text == '\r' || text == '\t' || text == '\n') {
+    if (text.isEmpty() || text.trimmed().isEmpty()) {
         return;
     }
-    highlightFunctionNames(text);
-    highlightKeywords(text);
-    highlightNumbers(text);
-    highlightBoolean(text);
-    highlightConstants(text);
-    highlightBuiltInFunctions(text);
-    highlightDatatypes(text);
-    highlightStrings(text);
-    highlightComments(text);
+
+    for (const HighlightRule &rule : highlightRules) {
+        QRegularExpressionMatchIterator matchIterator = rule.pattern.globalMatch(text);
+        while (matchIterator.hasNext()) {
+            QRegularExpressionMatch match = matchIterator.next();
+            setFormat(match.capturedStart(), match.capturedLength(), *rule.format);
+        }
+    }
+
+    handleComments(text);
+}
+
+void CodeHighlighter::initializeHighlightRules() {
+    highlightRules.reserve(9);
+
+    addHighlightRule(functionNamePattern, &functionNameFormat);
+    addHighlightRule(GPC_Keywords, &keywordFormat);
+    addHighlightRule(GPC_Functions, &builtinFormat);
+    addHighlightRule(GPC_Constants, &constantsFormat);
+    addHighlightRule(GPC_Datatypes, &datatypesFormat);
+    addHighlightRule(GPC_Boolean, &booleanFormat);
+    addHighlightRule(numberPatterns, &numbersFormat);
+    addHighlightRule(stringsPatterns, &stringsFormat);
+}
+
+void CodeHighlighter::addHighlightRule(const QString& pattern, QTextCharFormat* format) {
+    HighlightRule rule;
+    rule.pattern = QRegularExpression(pattern);
+    rule.format = format;
+    highlightRules.append(rule);
 }
 
 void CodeHighlighter::ReloadThemeData() {
@@ -168,6 +189,8 @@ void CodeHighlighter::SetSyntaxFormat() {
         font.setFamily(editorFont);
         datatypesFormat.setFont(font);
     }
+
+    initializeHighlightRules();
 }
 
 void CodeHighlighter::RetrieveGPCData() {
@@ -350,56 +373,30 @@ void CodeHighlighter::RetrieveThemeData() {
     stringsFont = themeObj.contains("strings") ? themeObj["strings"].toObject()["font-style"].toString() : "default";
 }
 
-void CodeHighlighter::highlightKeywords(const QString &text) {
-    if (text.isEmpty()) {
-        return;
+const QRegularExpression CodeHighlighter::singleLineCommentPattern(R"(//[^\n]*)");
+const QRegularExpression CodeHighlighter::multiLineCommentStartPattern(R"(/\*)");
+const QRegularExpression CodeHighlighter::multiLineCommentEndPattern(R"(\*/)");
+
+void CodeHighlighter::handleComments(const QString& text) {
+    int startIndex = 0;
+    if (previousBlockState() != 1) {
+        startIndex = text.indexOf(multiLineCommentStartPattern);
     }
 
-    QRegularExpression expression(GPC_Keywords);
-    QRegularExpressionMatchIterator matchIterator = expression.globalMatch(text);
+    while (startIndex >= 0) {
+        QRegularExpressionMatch endMatch = multiLineCommentEndPattern.match(text, startIndex);
+        int endIndex;
 
-    while (matchIterator.hasNext()) {
-        QRegularExpressionMatch match = matchIterator.next();
-        setFormat(match.capturedStart(), match.capturedLength(), keywordFormat);
+        if (endMatch.hasMatch()) {
+            endIndex = endMatch.capturedEnd();
+            setFormat(startIndex, endIndex - startIndex, commentFormat);
+            startIndex = text.indexOf(multiLineCommentStartPattern, endIndex);
+        } else {
+            setFormat(startIndex, text.length() - startIndex, commentFormat);
+            setCurrentBlockState(1);
+            return;
+        }
     }
-}
-
-void CodeHighlighter::highlightBoolean(const QString &text) {
-    if (text.isEmpty()) {
-        return;
-    }
-
-    QRegularExpression expression(GPC_Boolean);
-    QRegularExpressionMatchIterator matchIterator = expression.globalMatch(text);
-
-    while (matchIterator.hasNext()) {
-        QRegularExpressionMatch match = matchIterator.next();
-        setFormat(match.capturedStart(), match.capturedLength(), booleanFormat);
-    }
-}
-
-void CodeHighlighter::highlightBuiltInFunctions(const QString &text) {
-    if (text.isEmpty()) {
-        return;
-    }
-
-    QRegularExpression expression(GPC_Functions);
-    QRegularExpressionMatchIterator matchIterator = expression.globalMatch(text);
-
-    while (matchIterator.hasNext()) {
-        QRegularExpressionMatch match = matchIterator.next();
-        setFormat(match.capturedStart(), match.capturedLength(), builtinFormat);
-    }
-}
-
-void CodeHighlighter::highlightComments(const QString &text) {
-    if (text.isEmpty()) {
-        return;
-    }
-
-    static const QRegularExpression singleLineCommentPattern(R"(//[^\n]*)");
-    static const QRegularExpression startMultiLineCommentPattern(R"(/\*)");
-    static const QRegularExpression endMultiLineCommentPattern(R"(\*/)");
 
     QRegularExpressionMatchIterator singleLineMatches = singleLineCommentPattern.globalMatch(text);
     while (singleLineMatches.hasNext()) {
@@ -407,107 +404,5 @@ void CodeHighlighter::highlightComments(const QString &text) {
         setFormat(match.capturedStart(), match.capturedLength(), commentFormat);
     }
 
-    int startIndex = 0;
-
-    if (previousBlockState() != 1) {
-        QRegularExpressionMatch startMatch = startMultiLineCommentPattern.match(text);
-        if (startMatch.hasMatch()) {
-            startIndex = startMatch.capturedStart();
-        } else {
-            startIndex = -1;
-        }
-    }
-
-    while (startIndex >= 0) {
-        QRegularExpressionMatch endMatch = endMultiLineCommentPattern.match(text, startIndex);
-        int endIndex = -1;
-
-        if (endMatch.hasMatch()) {
-            endIndex = endMatch.capturedEnd();
-            setFormat(startIndex, endIndex - startIndex, commentFormat);
-            startIndex = text.indexOf("/*", endIndex);
-        } else {
-            setFormat(startIndex, text.length() - startIndex, commentFormat);
-            setCurrentBlockState(1);
-            return;
-        }
-    }
     setCurrentBlockState(0);
-}
-
-void CodeHighlighter::highlightConstants(const QString &text) {
-    if (text.trimmed().isEmpty()) {
-        return;
-    }
-
-    QRegularExpression expression(GPC_Constants);
-    QRegularExpressionMatchIterator matchIterator = expression.globalMatch(text);
-
-    while (matchIterator.hasNext()) {
-        QRegularExpressionMatch match = matchIterator.next();
-        setFormat(match.capturedStart(), match.capturedLength(), constantsFormat);
-    }
-}
-
-void CodeHighlighter::highlightFunctionNames(const QString &text) {
-    if (text.trimmed().isEmpty()) {
-        return;
-    }
-
-    QRegularExpression expression(functionNamePattern);
-    QRegularExpressionMatchIterator matchIterator = expression.globalMatch(text);
-    while (matchIterator.hasNext()) {
-        QRegularExpressionMatch match = matchIterator.next();
-        int nameLength = match.captured().indexOf(QRegularExpression(R"(\s*\()"));
-        setFormat(match.capturedStart(), nameLength, functionNameFormat);
-    }
-}
-
-void CodeHighlighter::highlightNumbers(const QString &text) {
-    if (text.trimmed().isEmpty()) {
-        return;
-    }
-
-    QRegularExpression expression(numberPatterns);
-    QRegularExpressionMatchIterator matchIterator = expression.globalMatch(text);
-
-    while (matchIterator.hasNext()) {
-        QRegularExpressionMatch match = matchIterator.next();
-        setFormat(match.capturedStart(), match.capturedLength(), numbersFormat);
-    }
-}
-
-void CodeHighlighter::highlightStrings(const QString &text) {
-    if (text.trimmed().isEmpty()) {
-        return;
-    }
-
-    QRegularExpression expression(stringsPatterns);
-    QRegularExpressionMatchIterator matchIterator = expression.globalMatch(text);
-
-    while (matchIterator.hasNext()) {
-        QRegularExpressionMatch match = matchIterator.next();
-
-        if (match.hasMatch()) {
-            if (match.captured(1).isEmpty()) {
-                setFormat(match.capturedStart(0), match.capturedLength(0), stringsFormat);
-            } else {
-                setFormat(match.capturedStart(1), match.capturedLength(1), stringsFormat);
-            }
-        }
-    }
-}
-
-void CodeHighlighter::highlightDatatypes(const QString &text) {
-    if (text.trimmed().isEmpty()) {
-        return;
-    }
-
-    QRegularExpression expression(GPC_Datatypes);
-    QRegularExpressionMatchIterator matchIterator = expression.globalMatch(text);
-
-    while (matchIterator.hasNext()) {
-        QRegularExpressionMatch match = matchIterator.next();
-        setFormat(match.capturedStart(), match.capturedLength(), datatypesFormat);
-    }
 }

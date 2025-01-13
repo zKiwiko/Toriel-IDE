@@ -1,4 +1,4 @@
-#include "parser.h"
+#include "processor.h"
 #include <QFile>
 #include <QTextStream>
 #include <QDir>
@@ -9,16 +9,16 @@
 #include <QJsonDocument>
 #include <QCoreApplication>
 
-Parser::Parser() {
+Processor::Processor() {
     QString appPath = QCoreApplication::applicationDirPath();
     systemIncludePath = QDir(appPath).filePath("bin/data/gpc/libs");
 }
 
-const QRegularExpression Parser::include_pattern_system(R"(@include\s*<([^>]+)>)");
-const QRegularExpression Parser::include_pattern_project(R"(@include\s*\"([^"]+)\")");
-const QRegularExpression Parser::const_pattern(R"(@const\s+(\w+)\s*=?\s*([\w\.]+)?;?)");
+const QRegularExpression Processor::include_pattern_system(R"(@include\s*<([^>]+)>)");
+const QRegularExpression Processor::include_pattern_project(R"(@include\s*\"([^"]+)\")");
+const QRegularExpression Processor::const_pattern(R"(@const\s+(\w+)\s*=\s*([\w\.]+)?;)");
 
-void Parser::parse_File(const QString &path) {
+void Processor::parse_File(const QString &path) {
     QFile file(path);
     if (!file.open(QIODevice::ReadOnly)) {
         QMessageBox::critical(nullptr, "Error", "Unable to open project.json file.");
@@ -46,7 +46,7 @@ void Parser::parse_File(const QString &path) {
     }
 }
 
-QString Parser::resolveIncludePath(const QString& includePath, const QString& baseDir, bool isSystemInclude) {
+QString Processor::resolveIncludePath(const QString& includePath, const QString& baseDir, bool isSystemInclude) {
     if (isSystemInclude) {
         QString fileName = includePath;
         if (!fileName.endsWith(".gpc")) {
@@ -61,7 +61,7 @@ QString Parser::resolveIncludePath(const QString& includePath, const QString& ba
     }
 }
 
-QString Parser::processMain(const QString &mainPath, QStringList& processedFiles) {
+QString Processor::processMain(const QString &mainPath, QStringList& processedFiles) {
     if (processedFiles.contains(mainPath)) {
         QMessageBox::critical(nullptr, "Error", "Circular import detected for file: " + mainPath);
         throw std::runtime_error("Circular import detected");
@@ -77,7 +77,7 @@ QString Parser::processMain(const QString &mainPath, QStringList& processedFiles
     return processContent(content, QFileInfo(mainPath).absolutePath(), processedFiles);
 }
 
-QString Parser::processContent(const QString& content, const QString& baseDir, QStringList& processedFiles) {
+QString Processor::processContent(const QString& content, const QString& baseDir, QStringList& processedFiles) {
     QRegularExpressionMatchIterator constMatches = const_pattern.globalMatch(content);
     while (constMatches.hasNext()) {
         QRegularExpressionMatch match = constMatches.next();

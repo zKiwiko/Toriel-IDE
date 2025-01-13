@@ -1,0 +1,23 @@
+/*
+-- std/macros -- Standard library of Toriel IDE
+This Library is created by @Kiwiko aswell as Contributors for the Toriel IDE.
+A List of contributors can be see in the github repository's README file.
+.
+.
+.
+.
+*/
+
+function STD_DOUBLETAP(INPUT, TIME) {
+	if(event_press(INPUT) && get_brtime() < TIME) {
+ 		return TRUE; 
+	} else { 
+		return FALSE; 
+	}
+}
+
+function STD_BUTTONHOLD(INPUT, TIME) {
+	return get_ival(INPUT) && get_ptime(INPUT) > TIME;
+}
+
+

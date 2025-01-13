@@ -30,7 +30,7 @@ TorielWindow::TorielWindow(QWidget *parent)
     ui->setupUi(this);
     studio = new ZenStudio();
     highlighter = new CodeHighlighter(ui->code_field->document());
-    parse = new Parser();
+    processor = new Processor();
     AutoClosingPairs::Setup(ui->code_field);
 
     explorer.Init(ui->code_field, ui->explorer, highlighter->GPC_Datatypes);
@@ -50,8 +50,9 @@ TorielWindow::TorielWindow(QWidget *parent)
 TorielWindow::~TorielWindow()
 {
     delete ui;
-    delete parse;
+    delete processor;
     delete studio;
+    delete highlighter;
 }
 
 void TorielWindow::tprint(const QString &what) {
@@ -206,7 +207,7 @@ void TorielWindow::on_BuildAndRun_clicked() {
 
     try {
         tprint("Parsing Main source file...");
-        parse->parse_File(package_location);
+        processor->parse_File(package_location);
     } catch (const std::exception& ex) {
         QMessageBox::critical(this, "Error", QString("Exception in parse_File: %1").arg(ex.what()));
         return;
@@ -215,17 +216,17 @@ void TorielWindow::on_BuildAndRun_clicked() {
         return;
     }
 
-    QString main_location = currentDir + "/" + parse->pr_src;
+    QString main_location = currentDir + "/" + processor->pr_src;
     if (!QFile::exists(main_location)) {
         QMessageBox::critical(this, "Error", "Main file not found.");
         return;
     }
     QStringList processedFiles;
-    QString backupDir = ("bin/backups/" + parse->pr_name + "/" + parse->pr_ver);
+    QString backupDir = ("bin/backups/" + processor->pr_name + "/" + processor->pr_ver);
 
     try {
         tprint("Processing Main source file and inclusions...");
-        QString processedCode = parse->processMain(main_location, processedFiles);
+        QString processedCode = processor->processMain(main_location, processedFiles);
         if (processedCode.isEmpty()) {
             QMessageBox::critical(this, "Error", "Processed code is empty.");
             return;
@@ -289,7 +290,7 @@ void TorielWindow::backup_processed(const QString& path, const QString &pC) {
         }
     }
 
-    QString fileName = ("p_" + parse->pr_name + ".gpc");
+    QString fileName = ("p_" + processor->pr_name + ".gpc");
     qDebug() << fileName;
     QString filePath = dir.filePath(fileName);
     QFile file(filePath);

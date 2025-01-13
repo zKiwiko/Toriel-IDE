@@ -179,6 +179,9 @@ border-radius: 0px;
            <height>16777215</height>
           </size>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::FocusPolicy::StrongFocus</enum>
+         </property>
          <property name="styleSheet">
           <string notr="true">QPlainTextEdit {
 	border-radius: 0px;

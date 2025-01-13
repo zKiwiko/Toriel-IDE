@@ -5,7 +5,7 @@
 #include <QRegularExpression>
 #include <QMap>
 
-class Parser {
+class Processor {
 private:
     static const QRegularExpression include_pattern_system;
     static const QRegularExpression include_pattern_project;
@@ -16,7 +16,7 @@ private:
     QString systemIncludePath;
 
 public:
-    Parser();
+    Processor();
 
     QString pr_src;
     QString pr_ver;

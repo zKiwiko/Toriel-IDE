@@ -13,7 +13,6 @@ class AutoComplete : public QObject {
     Q_OBJECT
 
 public:
-    //explicit AutoComplete(QObject *parent = nullptr);
     QSet<QString> addedItems;
     void SetupWords(QString kw, QString bif, QString dt, QString c);
     void Init(QPlainTextEdit *editor);

@@ -1,5 +1,4 @@
 #pragma once
-
 #include <QSyntaxHighlighter>
 #include <QPlainTextEdit>
 #include <QStringList>
@@ -18,29 +17,34 @@ public:
     QString GPC_Functions;
     QString GPC_Keywords;
     QString GPC_Datatypes;
-
     QString editorColor;
     QString menuBarColor;
     QString statusBarColor;
     QString terminalColor;
     QString backgroundColor;
     QString explorerColor;
-
     QString editorFont;
     QString explorerFont;
     QString textColor;
-
     QString lineColor;
 
 protected:
     void highlightBlock(const QString& text) override;
+
 private:
+    struct HighlightRule {
+        QRegularExpression pattern;
+        QTextCharFormat* format;
+    };
 
+    static const QRegularExpression singleLineCommentPattern;
+    static const QRegularExpression multiLineCommentStartPattern;
+    static const QRegularExpression multiLineCommentEndPattern;
 
-    QString GPC_Boolean = { "(TRUE|FALSE)" };
-    QString functionNamePattern = R"(\b[A-Za-z_]\w*(?:\s*\())";
-    QString numberPatterns = { "\\b(\\d+(\\.\\d+)?|0x[0-9a-fA-F]+)\\b" };
-    QString stringsPatterns = { R"(".*?"|@include\s+<([^>]+))" };
+    const QString GPC_Boolean = { "(TRUE|FALSE)" };
+    const QString functionNamePattern = R"(\b([A-Za-z_]\w*)(?=\())";
+    const QString numberPatterns = { "\\b(\\d+(\\.\\d+)?|0x[0-9a-fA-F]+)\\b" };
+    const QString stringsPatterns = { R"(".*?"|@include\s+<([^>]+))" };
 
     QTextCharFormat keywordFormat;
     QTextCharFormat booleanFormat;
@@ -72,15 +76,10 @@ private:
     QString stringsFont;
     QString commentsFont;
 
-    void RetrieveGPCData();
+    QVector<HighlightRule> highlightRules;
 
-    void highlightKeywords(const QString &text);
-    void highlightNumbers(const QString &text);
-    void highlightBoolean(const QString &text);
-    void highlightBuiltInFunctions(const QString &text);
-    void highlightConstants(const QString &text);
-    void highlightStrings(const QString &text);
-    void highlightFunctionNames(const QString &text);
-    void highlightComments(const QString &text);
-    void highlightDatatypes(const QString& text);
+    void RetrieveGPCData();
+    void initializeHighlightRules();
+    void handleComments(const QString& text);
+    void addHighlightRule(const QString& pattern, QTextCharFormat* format);
 };
