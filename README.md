@@ -169,6 +169,7 @@ This will copy the content of the file to where the inclusion takes place.
 You can include files from the [Standard Library](#std) with the example below,
 This will also copy the content of said file to where the inclusion is before Toriel sends it 
 to ZenStudio.
+When using <> to included a STD lib, it will look in this path: `"APPPATH/bin/data/gpc/lib"` then include the file matching the file name, as long as it ends with .gpc.
 ```python
 @include <std/(dir|file)>
 ```
