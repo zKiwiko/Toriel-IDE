@@ -449,6 +449,10 @@ void TorielWindow::on_actionSave_File_Ctrl_S_triggered()
     out << saveWhat;
     f.close();
     tprint("Saved file: " + currentFileName);
+
+    if(ui->actionResync_on_save->isChecked() && !currentDir.isEmpty()) {
+        updateIntelliSense();
+    }
 }
 
 void TorielWindow::on_actionClose_File_triggered()
@@ -542,10 +546,17 @@ void TorielWindow::on_directory_view_doubleClicked(const QModelIndex &index)
         if (!data.isEmpty()) {
             ui->code_field->setPlainText(QString::fromUtf8(data));
             tprint("Opened file: " + currentFileName);
+        } else {
+            ui->code_field->setPlainText("");
+            tprint("Opened file: " + currentFileName);
         }
         watcher->deleteLater();
     });
     watcher->setFuture(future);
+
+    if(ui->actionResync_on_save->isChecked() && !currentDir.isEmpty()) {
+        updateIntelliSense();
+    }
 }
 
 

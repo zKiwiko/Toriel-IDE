@@ -58,7 +58,7 @@ QStringList Processor::getProjectHeaders(const QString &path) {
     QJsonDocument doc = QJsonDocument::fromJson(data);
 
     if (doc.isNull()) {
-        QMessageBox::critical(nullptr, "Error", "Failed to parse JSON.");
+        QMessageBox::critical(nullptr, "Error", "Failed to parse project.json file.");
         return {};
     }
 

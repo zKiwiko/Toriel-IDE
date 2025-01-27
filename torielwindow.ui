@@ -311,6 +311,7 @@ background-color: lighter;
     </property>
     <addaction name="actionChoose_Theme"/>
     <addaction name="actionReload_Theme"/>
+    <addaction name="actionResync_on_save"/>
     <addaction name="separator"/>
     <addaction name="actionGPC_Docs"/>
     <addaction name="actionToriel_Docs"/>
@@ -332,7 +333,7 @@ background-color: lighter;
    <widget class="QMenu" name="menuTools">
     <property name="geometry">
      <rect>
-      <x>351</x>
+      <x>382</x>
       <y>115</y>
       <width>175</width>
       <height>88</height>
@@ -530,6 +531,14 @@ background-color: lighter;
   <action name="actionClose_Project_2">
    <property name="text">
     <string>Close Project</string>
+   </property>
+  </action>
+  <action name="actionResync_on_save">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Resync On Save</string>
    </property>
   </action>
  </widget>

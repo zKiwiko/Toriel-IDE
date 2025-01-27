@@ -108,7 +108,7 @@ void AutoComplete::SetupWords(QString kw, QString bif, QString dt, QString c) {
         ));
 
     patterns.append(QRegularExpression(
-        R"((?:@const)\s+(\w+)(?:\s*=\s*([\w\.]+))?;)",
+        R"((@const)\s+(\w+)(\s*=\s*([\w\.]+))?;)",
         QRegularExpression::MultilineOption
         ));
 
