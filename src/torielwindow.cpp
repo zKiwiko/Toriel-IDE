@@ -22,6 +22,10 @@
 #include <cmath>
 #include <vector>
 #include <QClipboard>
+#include <QtConcurrent/QtConcurrent>
+#include <QFuture>
+#include <QFutureWatcher>
+#include <QInputDialog>
 
 TorielWindow::TorielWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -31,6 +35,7 @@ TorielWindow::TorielWindow(QWidget *parent)
     studio = new ZenStudio();
     highlighter = new CodeHighlighter(ui->code_field->document());
     processor = new Processor();
+
     AutoClosingPairs::Setup(ui->code_field);
 
     explorer.Init(ui->code_field, ui->explorer, highlighter->GPC_Datatypes);
@@ -69,7 +74,7 @@ void TorielWindow::checkForUpdate() {
     QObject::connect(manager, &QNetworkAccessManager::finished, [this, manager](QNetworkReply *reply) {
     if (reply->error() != QNetworkReply::NoError) {
         tprint("Failed to check for updates: " + reply->errorString());
-            reply->deleteLater();
+        reply->deleteLater();
         manager->deleteLater();
         return;
     }
@@ -175,6 +180,9 @@ void TorielWindow::highlightCurrentLine()
 
 void TorielWindow::on_BuildAndRun_clicked() {
 
+    QStringList processedFiles;
+    QString package_location = currentDir + "/project.json";
+
     if (currentDir.isEmpty()) {
         if (!currentFile.isEmpty()) {
             QFile file(currentFile);
@@ -199,7 +207,6 @@ void TorielWindow::on_BuildAndRun_clicked() {
         }
     }
 
-    QString package_location = currentDir + "/project.json";
     if (!QFile::exists(package_location)) {
         QMessageBox::critical(this, "Error", "Missing project.json file.");
         return;
@@ -209,10 +216,10 @@ void TorielWindow::on_BuildAndRun_clicked() {
         tprint("Parsing Main source file...");
         processor->parse_File(package_location);
     } catch (const std::exception& ex) {
-        QMessageBox::critical(this, "Error", QString("Exception in parse_File: %1").arg(ex.what()));
+        QMessageBox::critical(this, "Error", QString("Exception while parsing package file: %1").arg(ex.what()));
         return;
     } catch (...) {
-        QMessageBox::critical(this, "Error", "Unknown exception in parse_File.");
+        QMessageBox::critical(this, "Error", "Unknown exception while parsing package file.");
         return;
     }
 
@@ -221,8 +228,6 @@ void TorielWindow::on_BuildAndRun_clicked() {
         QMessageBox::critical(this, "Error", "Main file not found.");
         return;
     }
-    QStringList processedFiles;
-    QString backupDir = ("bin/backups/" + processor->pr_name + "/" + processor->pr_ver);
 
     try {
         tprint("Processing Main source file and inclusions...");
@@ -231,11 +236,9 @@ void TorielWindow::on_BuildAndRun_clicked() {
             QMessageBox::critical(this, "Error", "Processed code is empty.");
             return;
         }
-        tprint("Sending to Zen Studio");
         studio->SendToStudio(processedCode);
-        tprint("Sent to Zen Studio");
-        backup_project(currentDir, backupDir);
-        backup_processed(backupDir, processedCode);
+        build_processed(processedCode);
+
     } catch (const std::exception& ex) {
         QMessageBox::critical(this, "Error", QString("Exception: %1").arg(ex.what()));
         return;
@@ -246,7 +249,7 @@ void TorielWindow::on_BuildAndRun_clicked() {
 }
 
 bool TorielWindow::backup_project(const QString& sPath, const QString& dPath) {
-    tprint("Creating Backup...");
+    tprint("Backing up project...");
 
     QDir source(sPath);
     QDir destination(dPath);
@@ -281,17 +284,17 @@ bool TorielWindow::backup_project(const QString& sPath, const QString& dPath) {
     return true;
 }
 
-void TorielWindow::backup_processed(const QString& path, const QString &pC) {
-    QDir dir(path);
+void TorielWindow::build_processed(const QString &content) {
+    QString buildDir = currentDir + "/build";
+    QDir dir(buildDir);
 
     if (!dir.exists()) {
-        if (!dir.mkpath(".")) {
+        if(!dir.mkdir(buildDir)) {
             return;
         }
     }
 
-    QString fileName = ("p_" + processor->pr_name + ".gpc");
-    qDebug() << fileName;
+    QString fileName = (processor->pr_name + "-" + processor->pr_ver + ".gpc");
     QString filePath = dir.filePath(fileName);
     QFile file(filePath);
 
@@ -301,7 +304,7 @@ void TorielWindow::backup_processed(const QString& path, const QString &pC) {
     }
 
     QTextStream out(&file);
-    out << pC;
+    out << content;
     file.close();
 }
 
@@ -318,14 +321,32 @@ QColor TorielWindow::adjustGlow(const QColor &color, int adjustment) {
 }
 
 void TorielWindow::setTreeView() {
-    QFileSystemModel *Model = new QFileSystemModel();
-    Model->setRootPath(QDir::rootPath());
-    QModelIndex root = Model->index(currentDir);
+    QFileSystemModel *model = new QFileSystemModel();
+    model->setRootPath(QDir::rootPath());
+    QModelIndex root = model->index(currentDir);
 
-    ui->directory_view->setModel(Model);
+    QFileIconProvider *iconProvider = new QFileIconProvider();
+    model->setIconProvider(iconProvider);
+
+    class CustomIconProvider : public QFileIconProvider {
+    public:
+        QIcon icon(const QFileInfo &info) const override {
+            if (info.suffix() == "gpc" || info.suffix() == "gpch" || info.suffix() == "gph") {
+                return QIcon("bin/assets/icon/files/cronus.ico");
+            } else if(info.suffix() == "json") {
+                return QIcon("bin/assets/icon/files/json.ico");
+            } else {
+                return QFileIconProvider::icon(info);
+            }
+        }
+    };
+
+    model->setIconProvider(new CustomIconProvider());
+
+    ui->directory_view->setModel(model);
     ui->directory_view->setRootIndex(root);
 
-    for (int column = 1; column < Model->columnCount(); ++column) {
+    for (int column = 1; column < model->columnCount(); ++column) {
         ui->directory_view->setColumnHidden(column, true);
     }
 
@@ -336,44 +357,70 @@ void TorielWindow::setTreeView() {
 
 void TorielWindow::on_actionOpen_Folder_triggered()
 {
-    QString directory = QFileDialog::getExistingDirectory(nullptr, "Select Folder", QDir::homePath(), QFileDialog::ShowDirsOnly);
-    currentDir = directory;
-    setTreeView();
-    tprint("Opened folder: " + currentDir);
+    QString directory = QFileDialog::getExistingDirectory(
+        nullptr,
+        "Select Folder",
+        currentDir.isEmpty() ? QDir::homePath() : currentDir,
+        QFileDialog::ShowDirsOnly
+        );
+
+    if (directory.isEmpty()) {
+        ui->directory_view->setModel(nullptr);
+        tprint("Folder selection canceled.");
+    } else {
+        currentDir = directory;
+        setTreeView();
+        tprint("Opened folder: " + currentDir);
+        updateIntelliSense();
+    }
 }
 
 void TorielWindow::on_actionOpen_File_Ctrl_O_triggered()
 {
-    tprint("Opening file, This may take a while depending on the size of the file...");
-    QString file = QFileDialog::getOpenFileName(nullptr, "Open GPC File", QDir::homePath(), "GPC Files (*.gpc);;All Files(*)");
+    QString file = QFileDialog::getOpenFileName(
+        nullptr,
+        "Open GPC File",
+        currentDir.isEmpty() ? QDir::homePath() : currentDir,
+        "GPC Files (*.gpc);;All Files (*)"
+        );
+
     if(file.isEmpty()) {
         return;
     }
 
     currentFile = file;
-
-    QFile f(currentFile);
     QFileInfo fi(currentFile);
-
-    if(!f.open(QIODevice::ReadOnly)) {
-        QMessageBox::warning(nullptr, "File Error", "Couldn't Open file: " + currentFile);
-        return;
-    }
-
-    QByteArray data;
-    char buffer[8192];
-    while (!f.atEnd()) {
-        qint64 bytesRead = f.read(buffer, sizeof(buffer));
-        if (bytesRead > 0) {
-            data.append(buffer, bytesRead);
-        }
-    }
-
     currentFileName = fi.fileName();
-    f.close();
 
-    ui->code_field->setPlainText(QString::fromUtf8(data));
-    tprint("Opened file: " + currentFileName);
+    QFuture<QByteArray> future = QtConcurrent::run([this] {
+        QFile f(currentFile);
+        if(!f.open(QIODevice::ReadOnly)) {
+            QMessageBox::warning(nullptr, "File Error", "Couldn't Open file: " + currentFile);
+            return QByteArray();
+        }
+
+        QByteArray data;
+        char buffer[8192];
+        while (!f.atEnd()) {
+            qint64 bytesRead = f.read(buffer, sizeof(buffer));
+            if (bytesRead > 0) {
+                data.append(buffer, bytesRead);
+            }
+        }
+        f.close();
+        return data;
+    });
+
+    QFutureWatcher<QByteArray> *watcher = new QFutureWatcher<QByteArray>(this);
+    connect(watcher, &QFutureWatcher<QByteArray>::finished, [this, watcher] {
+        QByteArray data = watcher->result();
+        if (!data.isEmpty()) {
+            ui->code_field->setPlainText(QString::fromUtf8(data));
+            tprint("Opened file: " + currentFileName);
+        }
+        watcher->deleteLater();
+    });
+    watcher->setFuture(future);
 }
 
 void TorielWindow::on_actionSave_File_Ctrl_S_triggered()
@@ -459,8 +506,6 @@ void TorielWindow::on_directory_view_doubleClicked(const QModelIndex &index)
         tprint("Saved file: " + currentFileName);
     }
 
-
-
     QString filePath = model->filePath(index);
     QFileInfo fileInfo(filePath);
     if (!fileInfo.isFile()) {
@@ -472,15 +517,35 @@ void TorielWindow::on_directory_view_doubleClicked(const QModelIndex &index)
     QFileInfo fi(currentFile);
     currentFileName = fi.fileName();
 
-    QFile inputfile(currentFile);
-    if(inputfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QTextStream in(&inputfile);
-        QString fileContent = in.readAll();
-        ui->code_field->setPlainText(fileContent);
-        inputfile.close();
-    } else {
-        QMessageBox::warning(nullptr, "Error", "Could not open the selected file");
-    }
+    QFuture<QByteArray> future = QtConcurrent::run([this] {
+        QFile f(currentFile);
+        if(!f.open(QIODevice::ReadOnly)) {
+            QMessageBox::warning(nullptr, "File Error", "Couldn't Open file: " + currentFile);
+            return QByteArray();
+        }
+
+        QByteArray data;
+        char buffer[8192];
+        while (!f.atEnd()) {
+            qint64 bytesRead = f.read(buffer, sizeof(buffer));
+            if (bytesRead > 0) {
+                data.append(buffer, bytesRead);
+            }
+        }
+        f.close();
+        return data;
+    });
+
+    QFutureWatcher<QByteArray> *watcher = new QFutureWatcher<QByteArray>(this);
+    connect(watcher, &QFutureWatcher<QByteArray>::finished, [this, watcher] {
+        QByteArray data = watcher->result();
+        if (!data.isEmpty()) {
+            ui->code_field->setPlainText(QString::fromUtf8(data));
+            tprint("Opened file: " + currentFileName);
+        }
+        watcher->deleteLater();
+    });
+    watcher->setFuture(future);
 }
 
 
@@ -555,3 +620,116 @@ void TorielWindow::on_actionReload_Theme_triggered()
     highlighter->SetSyntaxFormat();
     setWidgetThemes();
 }
+
+void TorielWindow::updateIntelliSense() {
+
+    if(currentDir.isEmpty()) {
+        return;
+    }
+    if(!QFile(currentDir + "/project.json").exists()) {
+        return;
+    }
+
+    QStringList headers = processor->getProjectHeaders((currentDir + "/project.json"));
+    QStringList std = processor->getStandardLibrary((currentDir + "/project.json"));
+
+    autocomplete.headerContent = "";
+
+    autocomplete.resyncHeaders(currentDir, headers);
+    autocomplete.resyncStd("bin/data/gpc/libs", std);
+}
+
+void TorielWindow::on_actionNew_File_Ctrl_N_triggered()
+{
+    QString fileName = QFileDialog::getSaveFileName(nullptr, "Create New File", "", "GPC Files (*.gpc);;All Files (*)");
+
+    if (!fileName.isEmpty()) {
+        QFile file(fileName);
+
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            file.close();
+        }
+    }
+}
+
+void TorielWindow::on_actionNew_Project_Directory_triggered()
+{
+    if(currentDir.isEmpty()) {
+        return;
+    }
+    bool i;
+    QString dirName = QInputDialog::getText(this, "New Directory", "Enter directory name:", QLineEdit::Normal, "", &i);
+    if(!dirName.isEmpty()) {
+        QDir dir(currentDir);
+        if(i && dir.mkdir(dirName)) {
+            setTreeView();
+        } else {
+            return;
+        }
+    }
+}
+
+void TorielWindow::on_actionNew_Project_File_triggered()
+{
+    if(currentDir.isEmpty()) {
+        return;
+    }
+    QString path;
+    QString fileName = QInputDialog::getText(this, "New File", "Enter file name:", QLineEdit::Normal, "");
+    if(!fileName.isEmpty()) {
+        if(!fileName.contains(".gpc")) {
+            fileName += ".gpc";
+        }
+        path = currentDir + "/" + fileName;
+
+        QFile file(path);
+        if(file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            QTextStream out(&fileName);
+            out << "// Created " << QDateTime::currentDateTime().toString("mm:dd:yyyy");
+            file.close();
+        }
+    }
+}
+
+
+void TorielWindow::on_actionDelete_Project_FIle_triggered()
+{
+    if(currentDir.isEmpty()) {
+        return;
+    }
+    QString path;
+    QString fileName = QInputDialog::getText(this, "Delete File", "Enter file name:", QLineEdit::Normal, "");
+    if(!fileName.isEmpty()) {
+        if(!fileName.contains(".gpc")) {
+            fileName += ".gpc";
+        }
+        path = currentDir + "/" + fileName;
+
+        QFile file(path);
+
+        if(file.exists()) {
+            file.remove();
+        }
+    }
+}
+
+
+void TorielWindow::on_actionDelete_Project_Directory_triggered()
+{
+    if(currentDir.isEmpty()) {
+        return;
+    }
+    QString dirName = QInputDialog::getText(this, "Delete Directory", "Enter directory name:", QLineEdit::Normal, "");
+    if(!dirName.isEmpty()) {
+        QDir dir(currentDir + "/" + dirName);
+        if(dir.exists()) {
+            dir.removeRecursively();
+        }
+    }
+}
+
+void TorielWindow::on_resync_Button_pressed()
+{
+    updateIntelliSense();
+}
+

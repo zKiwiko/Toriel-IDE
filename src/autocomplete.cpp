@@ -136,7 +136,7 @@ void AutoComplete::Init(QPlainTextEdit *editor) {
             return;
         }
 
-        updateCompletionList(editor->toPlainText());
+        updateCompletionList(editor->toPlainText() + headerContent);
 
         if (completer->completionPrefix() != word) {
             completer->setCompletionPrefix(word);
@@ -175,3 +175,48 @@ void AutoComplete::Style(QString Color, QString line) {
     "}"
     ).arg(Color).arg(line));
 }
+
+#include <QDir>
+
+void AutoComplete::resyncHeaders(const QString& dir, const QStringList& files) {
+    for (const auto& file : files) {
+        QFile headerFile(dir + "/" + file);
+        if (headerFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QString content = headerFile.readAll();
+            headerContent += content;
+            headerFile.close();
+        } else {
+            qWarning() << "Failed to open file:" << file;
+        }
+    }
+}
+
+
+void AutoComplete::resyncStd(QString dir, QStringList files) {
+
+    QDir baseDir(dir);
+
+    for (auto& file : files) {
+        QString processedFile = file;
+
+        processedFile.remove('<');
+        processedFile.remove('>');
+
+        if (!processedFile.endsWith(".gpc")) {
+            processedFile += ".gpc";
+        }
+
+        QString filePath = baseDir.filePath(processedFile);
+
+        QFile headerFile(filePath);
+        if (headerFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QString content = headerFile.readAll();
+            headerContent += content;
+            headerFile.close();
+        } else {
+            qWarning() << "Failed to open file:" << filePath;
+        }
+    }
+}
+
+

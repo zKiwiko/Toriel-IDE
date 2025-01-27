@@ -1,0 +1,37 @@
+/* <std/map> --------- standard library of Toriel IDE
+https://github.com/zKiwiko/Toriel-IDE
+. 
+.
+.
+.
+.
+.
+*/
+
+int STD_HASH_STRING_HASH;
+int STD_HASH_STRING_LEN;
+int STD_HASH_STRING_I;
+
+function STD_MAP_HAS_STRING(address) {
+	STD_HASH_STRING_HASH = 0;
+	STD_HASH_STRING_LEN = STD_STRING_LEN(address);
+	for(STD_HASH_STRING_I = 0; STD_HASH_STRING_I < STD_HASH_STRING_LEN; STD_HASH_STRING_I++) {
+		STD_HASH_STRING_HASH = STD_HASH_STRING_HASH + ((STD_HASH_STRING_HASH) << 5) + STD_LIST_GET_AT(STD_HASH_STRING_I, address) + ((STD_LIST_GET_AT(STD_HASH_STRING_I, address)) << 7);
+	}
+	return ((STD_HASH_STRING_HASH) ^ (STD_HASH_STRING_HASH >> 16)) & 0xffff;
+}
+
+int STD_MAP_PT;
+function STD_MAP(type, sign) {
+	STD_MAP_PT = STD_LIST(2, sizeof(int16), UNSIGNED);
+	STD_LIST_SET_AT(STD_LIST(0, sizeof(int16), UNSIGNED), 0, STD_MAP_PT);
+	STD_LIST_SET_AT(STD_LIST(0, type, sign), 1, SDT_MAP_PT);
+	return STD_MAP_PT;
+}
+
+int STD_INSERT_HASHED;
+function STD_MAP_INSERT(key, value, address) { // returns null
+	STD_INSERT_HASED = STD_MAP_HASH_STRING(key);
+	STD_LIST_SET_AT(STD_LIST_APPEND(STD_INSERT_HASHED, STD_LIST_GET_AT(0, address)), 0, address);
+	STD_LIST_SET_AT(STD_LIST_APPEND(value, STD_LIST_GET_AT(1, address)), 1, address);
+}

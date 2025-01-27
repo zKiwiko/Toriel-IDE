@@ -46,6 +46,70 @@ void Processor::parse_File(const QString &path) {
     }
 }
 
+QStringList Processor::getProjectHeaders(const QString &path) {
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::critical(nullptr, "Error", "Unable to open project.json file.");
+        return {};
+    }
+
+    QByteArray data = file.readAll();
+    file.close();
+    QJsonDocument doc = QJsonDocument::fromJson(data);
+
+    if (doc.isNull()) {
+        QMessageBox::critical(nullptr, "Error", "Failed to parse JSON.");
+        return {};
+    }
+
+    QJsonObject obj = doc.object();
+    QStringList headersList;
+
+    if (obj.contains("headers") && obj["headers"].isArray()) {
+        QJsonArray headersArray = obj["headers"].toArray();
+        for (const QJsonValue &value : headersArray) {
+            if (value.isString()) {
+                headersList.append(value.toString());
+            }
+        }
+    } else {
+        return {};
+    }
+    return headersList;
+}
+
+QStringList Processor::getStandardLibrary(const QString& path) {
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::critical(nullptr, "Error", "Unable to open project.json file.");
+        return {};
+    }
+
+    QByteArray data = file.readAll();
+    file.close();
+    QJsonDocument doc = QJsonDocument::fromJson(data);
+
+    if (doc.isNull()) {
+        QMessageBox::critical(nullptr, "Error", "Failed to parse JSON.");
+        return {};
+    }
+
+    QJsonObject obj = doc.object();
+    QStringList headersList;
+
+    if (obj.contains("std") && obj["std"].isArray()) {
+        QJsonArray headersArray = obj["std"].toArray();
+        for (const QJsonValue &value : headersArray) {
+            if (value.isString()) {
+                headersList.append(value.toString());
+            }
+        }
+    } else {
+        return {};
+    }
+    return headersList;
+}
+
 QString Processor::resolveIncludePath(const QString& includePath, const QString& baseDir, bool isSystemInclude) {
     if (isSystemInclude) {
         QString fileName = includePath;

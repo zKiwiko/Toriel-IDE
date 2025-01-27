@@ -141,6 +141,13 @@ border-radius: 0px;
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="resync_Button">
+         <property name="text">
+          <string>Resync IntelliSense</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Orientation::Vertical</enum>
@@ -292,7 +299,7 @@ background-color: lighter;
     <addaction name="actionClose_File"/>
     <addaction name="separator"/>
     <addaction name="actionOpen_Folder"/>
-    <addaction name="actionClose_Project"/>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
@@ -342,7 +349,29 @@ background-color: lighter;
     <addaction name="separator"/>
     <addaction name="separator"/>
    </widget>
+   <widget class="QMenu" name="menuProject">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>124</y>
+      <width>222</width>
+      <height>168</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Project</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>bin/assets/menu-bar/project.svg</normaloff>bin/assets/menu-bar/project.svg</iconset>
+    </property>
+    <addaction name="actionNew_Project_File"/>
+    <addaction name="actionNew_Project_Directory"/>
+    <addaction name="actionDelete_Project_FIle"/>
+    <addaction name="actionDelete_Project_Directory"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuProject"/>
    <addaction name="menuView"/>
    <addaction name="menuSettings"/>
    <addaction name="menuTools"/>
@@ -448,6 +477,59 @@ background-color: lighter;
   <action name="actionReload_Theme">
    <property name="text">
     <string>Reload Theme</string>
+   </property>
+  </action>
+  <action name="actionNew_Directory">
+   <property name="text">
+    <string>New Directory...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+N</string>
+   </property>
+  </action>
+  <action name="actionNew_Project">
+   <property name="text">
+    <string>New Project...</string>
+   </property>
+  </action>
+  <action name="actionDelete_Directory">
+   <property name="text">
+    <string>Delete Directory</string>
+   </property>
+  </action>
+  <action name="actionDelete_File">
+   <property name="text">
+    <string>Delete File</string>
+   </property>
+  </action>
+  <action name="actionNew_Project_2">
+   <property name="text">
+    <string>New Project</string>
+   </property>
+  </action>
+  <action name="actionNew_Project_File">
+   <property name="text">
+    <string>New Project File</string>
+   </property>
+  </action>
+  <action name="actionNew_Project_Directory">
+   <property name="text">
+    <string>New Project Directory</string>
+   </property>
+  </action>
+  <action name="actionDelete_Project_FIle">
+   <property name="text">
+    <string>Delete Project File</string>
+   </property>
+  </action>
+  <action name="actionDelete_Project_Directory">
+   <property name="text">
+    <string>Delete Project Directory</string>
+   </property>
+  </action>
+  <action name="actionClose_Project_2">
+   <property name="text">
+    <string>Close Project</string>
    </property>
   </action>
  </widget>

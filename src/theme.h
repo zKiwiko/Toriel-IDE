@@ -44,7 +44,7 @@ private:
     const QString GPC_Boolean = { "(TRUE|FALSE)" };
     const QString functionNamePattern = R"(\b([A-Za-z_]\w*)(?=\())";
     const QString numberPatterns = { "\\b(\\d+(\\.\\d+)?|0x[0-9a-fA-F]+)\\b" };
-    const QString stringsPatterns = { R"(".*?"|@include\s+<([^>]+))" };
+    const QString stringsPatterns = { R"(".*?"|(?<=@include)\s+<([^>]+)>)" };
 
     QTextCharFormat keywordFormat;
     QTextCharFormat booleanFormat;

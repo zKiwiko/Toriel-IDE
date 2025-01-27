@@ -58,11 +58,23 @@ private slots:
 
     void on_actionReload_Theme_triggered();
 
+    void on_actionNew_File_Ctrl_N_triggered();
+
+    void on_actionNew_Project_Directory_triggered();
+
+    void on_actionNew_Project_File_triggered();
+
+    void on_actionDelete_Project_FIle_triggered();
+
+    void on_actionDelete_Project_Directory_triggered();
+
+    void on_resync_Button_pressed();
+
 private:
     QString currentDir;
     QString currentFile;
     QString currentFileName;
-    QString toriel_ver = "0.0.4";
+    QString toriel_ver = "0.0.5";
 
     Ui::TorielWindow *ui;
     CodeHighlighter *highlighter;
@@ -74,9 +86,10 @@ private:
     QString StatusBarMsg();
 
     bool backup_project(const QString& sPath, const QString& dPath);
-    void backup_processed(const QString& path, const QString& pC);
+    void build_processed(const QString& content);
     void tprint(const QString &what);
     void checkForUpdate();
+    void updateIntelliSense();
 
     QColor adjustGlow(const QColor& color, int adjustment);
 

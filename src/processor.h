@@ -23,5 +23,7 @@ public:
     QString pr_name;
 
     void parse_File(const QString &path); // parses the package file to define main, name and version
+    QStringList getProjectHeaders(const QString &path);
+    QStringList getStandardLibrary(const QString &path);
     QString processMain(const QString &mainPath, QStringList& processedFiles);
 };
