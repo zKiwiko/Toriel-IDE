@@ -114,11 +114,17 @@ project to send to Zen Studio. The metadata file (`project.json`) should contain
 * name
     * This should hold the main name of your project.
     it will be used for a backup in the `bin/data/backups` directory of Toriels installation path.
+    It will also be used for the built file, and will goto the `build` directory of your projects directory.
 * version
     * This should hold the current version of your project.
-    It will be used for the backup system once more, but will place the backup in a folder with the version number. (e.g: `bin/data/backups/{project_name}/{project_version}`)
+    It will be used for the backup system once more, but will place the backup in a folder with the version number. (e.g: `bin/data/backups/{project_name}/{project_version}`).
+    It will also be used for the built file, and will goto the `build` directory of your projects directory.
 * source
     * This should hold the main source file of your project. It will be the entry point for Toriel to start its preprocessing before sending the processed code to Zen Studio.
+* Headers
+    * This should contain all the header files you will use, this will allow intelliSense to see any defined functions or variables in those files.
+* std
+    * This should contain any STD Library files you will use, this will allow intelliSense to see any defined functions or variables in those files.
 
 
 ### project.json structure
@@ -128,7 +134,28 @@ project to send to Zen Studio. The metadata file (`project.json`) should contain
         "name": "",
         "version": "",
         "source": "",
-    }
+    },
+   "headers": [],
+   "std": []
+}
+```
+
+An example of a fully set up `project.json` file could look like this:
+```json
+{
+   "project" : {
+      "name": "quaoar",
+      "version": "1.0.0",
+      "source": "main.gpc",
+      },
+   "headers": [
+      "include/variables.gpc"
+      "include/functions.gpc"
+      "helpers.gpc"
+   ],
+   "std": [
+      "std/math/trig"
+   ]
 }
 ```
 
