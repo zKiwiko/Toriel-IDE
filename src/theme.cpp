@@ -21,6 +21,11 @@ void CodeHighlighter::highlightBlock(const QString &text) {
         return;
     }
 
+    QTextBlock block;
+    if(!block.isVisible()) {
+        return;
+    }
+
     for (const HighlightRule &rule : highlightRules) {
         QRegularExpressionMatchIterator matchIterator = rule.pattern.globalMatch(text);
         while (matchIterator.hasNext()) {
