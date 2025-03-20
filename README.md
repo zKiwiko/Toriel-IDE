@@ -100,7 +100,7 @@ When creating a new theme, its recommended you copy and paste the format below, 
 ## Project Structuring
 
 "True Project Structuring" refers to the ability of organizing your code into multiple different files.
-Toriel supports this idea in a robust way since Zen Studio lacks that ability.
+Toriel supports this idea in a robust way and adds it to GPC Scripting with flawless intergration with Zen Studio.
 
 **NOTE**: These features cannot be used with Standalone files, they can only be used inside project directories.
 
